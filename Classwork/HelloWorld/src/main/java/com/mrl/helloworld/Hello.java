@@ -9,5 +9,6 @@ package com.mrl.helloworld;
 public class Hello {
     public static void main(String[] args) {
         System.out.println("Hello, Maxwell!");
+        System.out.println("My name is HAL!");
     }
 }
