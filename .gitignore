@@ -442,3 +442,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 /Classwork/WindowMaster/target/
+/Classwork/WindowMasterDebug/target/
+/Classwork/PracticeProgramming/target/
