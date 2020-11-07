@@ -28,7 +28,7 @@ public class WindowMaster {
         Scanner myScanner = new Scanner(System.in);
         do {
             try {
-                System.out.println("Please enter window height:");
+                System.out.print("Please enter window height:");
                 stringHeight = myScanner.nextLine();
                 height = Float.parseFloat(stringHeight);
                 if (height > 0) {
