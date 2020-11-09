@@ -73,6 +73,7 @@ public class MiniZork {
                     System.out.println("You rap your hand hard against the door.");
                     System.out.println("The door swings open, revealing a large one-man eyed man in a bloody apron, holding a bloody meat cleaver.");
                     System.out.println("Do you run away, attack, or say hello?");
+                    action = input.nextLine();
                     
                     if(action.equalsIgnoreCase("run away")) {
                         System.out.println("You run away screaming across the fields - looking very foolish.");
