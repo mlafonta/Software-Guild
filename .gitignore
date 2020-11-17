@@ -441,6 +441,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/Summatives/M1Summative/target/
 /Classwork/WindowMaster/target/
 /Classwork/WindowMasterDebug/target/
 /Classwork/PracticeProgramming/target/
