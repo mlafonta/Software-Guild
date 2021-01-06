@@ -7,6 +7,7 @@ package com.mrl.vendingmachine.dto;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Objects;
 
 public class Change {
 
@@ -61,4 +62,64 @@ public class Change {
             pennies = BigDecimal.ZERO;
         }
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.quarters);
+        hash = 97 * hash + Objects.hashCode(this.dimes);
+        hash = 97 * hash + Objects.hashCode(this.nickels);
+        hash = 97 * hash + Objects.hashCode(this.pennies);
+        hash = 97 * hash + Objects.hashCode(this.quarter);
+        hash = 97 * hash + Objects.hashCode(this.dime);
+        hash = 97 * hash + Objects.hashCode(this.nickel);
+        hash = 97 * hash + Objects.hashCode(this.penny);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Change other = (Change) obj;
+        if (!Objects.equals(this.quarters, other.quarters)) {
+            return false;
+        }
+        if (!Objects.equals(this.dimes, other.dimes)) {
+            return false;
+        }
+        if (!Objects.equals(this.nickels, other.nickels)) {
+            return false;
+        }
+        if (!Objects.equals(this.pennies, other.pennies)) {
+            return false;
+        }
+        if (!Objects.equals(this.quarter, other.quarter)) {
+            return false;
+        }
+        if (!Objects.equals(this.dime, other.dime)) {
+            return false;
+        }
+        if (!Objects.equals(this.nickel, other.nickel)) {
+            return false;
+        }
+        if (!Objects.equals(this.penny, other.penny)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Change{" + "quarters=" + quarters + ", dimes=" + dimes + ", nickels=" + nickels + ", pennies=" + pennies + ", quarter=" + quarter + ", dime=" + dime + ", nickel=" + nickel + ", penny=" + penny + '}';
+    }
+    
+    
 }

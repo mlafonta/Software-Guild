@@ -119,8 +119,7 @@ public class VendingMachineView {
     public Product getNewProductInfo() {
         String name = io.readString("Please enter the name of the product");
         Product newProduct = new Product(name);
-        String priceString = io.readString("Please enter the price of the product");
-        BigDecimal price = new BigDecimal(priceString).setScale(2);
+        BigDecimal price = io.readBigDecimal("Please enter the price of the product").setScale(2);
         int stock = io.readInt("Please enter the current stock of the product");
         newProduct.setPrice(price);
         newProduct.setStock(stock);
@@ -176,13 +175,26 @@ public class VendingMachineView {
     }
 
     public Product getAdjustedPrice(Product product) {
-        String priceString = io.readString("Current price: " + product.getPrice() + "; Please enter new price.");
-        BigDecimal price = new BigDecimal(priceString);
+        BigDecimal price = io.readBigDecimal("Current price: " + product.getPrice() + "; Please enter new price.");
         product.setPrice(price);
         return product;
     }
 
     public void displayExitMessage() {
         io.print("Thank you and have a nice day!");
+    }
+
+    public void displayErrorMessage(String errorMsg) {
+        io.print("=== ERROR ===");
+        io.print(errorMsg);
+    }
+
+    public void displayItemSelection() {
+        io.print("Please make a selection.");
+    }
+
+
+    public void displayPurchaseSuccess(Product product) {
+        io.print("You have purchased one " + product.getName() + ". Your balance has been reduced by $" + product.getPrice() + ". Please Enjoy!");
     }
 }

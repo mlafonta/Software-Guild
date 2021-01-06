@@ -6,6 +6,7 @@
 package com.mrl.vendingmachine.controller;
 
 import com.mrl.vendingmachine.dao.VendingMachineDao;
+import com.mrl.vendingmachine.dao.VendingMachinePersistenceException;
 import com.mrl.vendingmachine.dto.Change;
 import com.mrl.vendingmachine.dto.Coins;
 import static com.mrl.vendingmachine.dto.Coins.DIME;
@@ -13,6 +14,11 @@ import static com.mrl.vendingmachine.dto.Coins.NICKEL;
 import static com.mrl.vendingmachine.dto.Coins.PENNY;
 import static com.mrl.vendingmachine.dto.Coins.QUARTER;
 import com.mrl.vendingmachine.dto.Product;
+import com.mrl.vendingmachine.service.InsufficientFundsException;
+import com.mrl.vendingmachine.service.NoItemInventoryException;
+import com.mrl.vendingmachine.service.NoSuchProductException;
+import com.mrl.vendingmachine.service.VendingMachineDataValidationException;
+import com.mrl.vendingmachine.service.VendingMachineDuplicateProductException;
 import com.mrl.vendingmachine.service.VendingMachineService;
 import com.mrl.vendingmachine.ui.VendingMachineView;
 import java.math.BigDecimal;
@@ -26,10 +32,8 @@ public class VendingMachineController {
 
     private VendingMachineView view;
     private VendingMachineService service;
-    private VendingMachineDao dao;
 
-    public VendingMachineController(VendingMachineView view, VendingMachineDao dao, VendingMachineService service) {
-        this.dao = dao;
+    public VendingMachineController(VendingMachineView view, VendingMachineService service) {
         this.view = view;
         this.service = service;
     }
@@ -37,82 +41,87 @@ public class VendingMachineController {
     public void run() {
         boolean keepGoingMain = true;
         int menuSelection = 0;
-        while (keepGoingMain) {
-            displayProducts();
-            displayBalance();
+        try {
+            while (keepGoingMain) {
+                displayProducts();
+                displayBalance();
 
-            menuSelection = getMenuSelection();
+                menuSelection = getMenuSelection();
 
-            switch (menuSelection) {
-                case 1:
-                    boolean keepGoingCoins = true;
-                    int coinsMenuSelection = 0;
-                    while (keepGoingCoins) {
-                        coinsMenuSelection = getCoinsMenuSelection();
+                switch (menuSelection) {
+                    case 1:
+                        boolean keepGoingCoins = true;
+                        int coinsMenuSelection = 0;
+                        while (keepGoingCoins) {
+                            coinsMenuSelection = getCoinsMenuSelection();
 
-                        switch (coinsMenuSelection) {
-                            case 1:
-                                insertCoins(QUARTER);
-                                break;
-                            case 2:
-                                insertCoins(DIME);
-                                break;
-                            case 3:
-                                insertCoins(NICKEL);
-                                break;
-                            case 4:
-                                insertCoins(PENNY);
-                                break;
-                            case 5:
-                                keepGoingCoins = false;
-                                break;
-                            default:
-                                unknownCommand();
+                            switch (coinsMenuSelection) {
+                                case 1:
+                                    insertCoins(QUARTER);
+                                    break;
+                                case 2:
+                                    insertCoins(DIME);
+                                    break;
+                                case 3:
+                                    insertCoins(NICKEL);
+                                    break;
+                                case 4:
+                                    insertCoins(PENNY);
+                                    break;
+                                case 5:
+                                    keepGoingCoins = false;
+                                    break;
+                                default:
+                                    unknownCommand();
+                            }
                         }
-                    }
-                    break;
-                case 2:
-                    purchaseItem();
-                    break;
-                case 3:
-                    int maintenanceMenuSelection = 0;
-                    boolean keepGoingMaintenance = true;
-                    while (keepGoingMaintenance) {
-                        maintenanceMenuSelection = getMaintenanceMenuSelection();
-                        
-                        switch(maintenanceMenuSelection) {
-                            case 1:
-                                addProduct();
-                                break;
-                            case 2:
-                                removeProduct();
-                                break;
-                            case 3:
-                                adjustInventory();
-                                break;
-                            case 4:
-                                adjustPrice();
-                                break;
-                            case 5:
-                                keepGoingMaintenance = false;
-                                break;
+                        break;
+                    case 2:
+                        purchaseItem();
+                        break;
+                    case 3:
+                        int maintenanceMenuSelection = 0;
+                        boolean keepGoingMaintenance = true;
+                        while (keepGoingMaintenance) {
+                            maintenanceMenuSelection = getMaintenanceMenuSelection();
+
+                            switch (maintenanceMenuSelection) {
+                                case 1:
+                                    addProduct();
+                                    break;
+                                case 2:
+                                    removeProduct();
+                                    break;
+                                case 3:
+                                    adjustInventory();
+                                    break;
+                                case 4:
+                                    adjustPrice();
+                                    break;
+                                case 5:
+                                    keepGoingMaintenance = false;
+                                    break;
+                            }
                         }
-                    }
-                    break;
-                case 4:
-                    getChange();
-                    keepGoingMain = false;
-                    break;
-                default:
-                    unknownCommand();
+                        break;
+                    case 4:
+                        getChange();
+                        keepGoingMain = false;
+                        break;
+                    default:
+                        unknownCommand();
+                }
+
             }
-            view.displayExitMessage();
+        } catch (VendingMachinePersistenceException | InsufficientFundsException | NoItemInventoryException | VendingMachineDataValidationException | VendingMachineDuplicateProductException | NoSuchProductException e) {
+            view.displayErrorMessage(e.getMessage());
         }
+        view.displayExitMessage();
     }
 
-    private void displayProducts() {
+    private void displayProducts() throws VendingMachinePersistenceException {
         view.displayMainBanner();
-        List<Product> productList = dao.listProducts();
+        List<Product> productList = service.listProducts();
         view.displayProducts(productList);
     }
 
@@ -131,11 +140,25 @@ public class VendingMachineController {
         view.displayBalance(balance);
     }
 
-    private void purchaseItem() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void purchaseItem() throws VendingMachinePersistenceException, InsufficientFundsException, NoItemInventoryException, NoSuchProductException {
+        view.displayItemSelection();
+
+        displayProducts();
+        displayBalance();
+        String name = view.getProductName();
+        try {
+            Product product = service.getProduct(name);
+
+            service.buyProduct(product);
+            view.displayPurchaseSuccess(product);
+
+        } catch (InsufficientFundsException | NoItemInventoryException | NoSuchProductException e) {
+            view.displayErrorMessage(e.getMessage());
+        }
+
     }
 
-    private int getMaintenanceMenuSelection() {
+    private int getMaintenanceMenuSelection() throws VendingMachinePersistenceException {
         return view.printMaintenanceMenuAndGetSelection();
     }
 
@@ -158,56 +181,67 @@ public class VendingMachineController {
         return view.printCoinsMenuAndGetSelection();
     }
 
-    private void addProduct() {
+    private void addProduct() throws VendingMachinePersistenceException, VendingMachineDataValidationException, VendingMachineDuplicateProductException {
         view.displayAddProductBanner();
-        Product newProduct = view.getNewProductInfo();
-        if(dao.getProduct(newProduct.getName()) == null) {
-            dao.addProduct(newProduct.getName(), newProduct);
-            view.displayAddSuccess();
-        } else {
-            view.displayAlreadyExists();
-        }
-        view.pressEnterToContinue();
+        boolean hasErrors = false;
+        do {
+            Product newProduct = view.getNewProductInfo();
+            try {
+                service.addProduct(newProduct);
+                view.displayAddSuccess();
+                view.pressEnterToContinue();
+                hasErrors = false;
+            } catch (VendingMachineDataValidationException | VendingMachineDuplicateProductException e) {
+                hasErrors = true;
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (hasErrors);
     }
 
-    private void removeProduct() {
+    private void removeProduct() throws VendingMachinePersistenceException {
         view.displayRemoveProductBanner();
         String name = view.getProductName();
-        if(dao.getProduct(name) != null) {
-            dao.removeProduct(name);
-            view.displayRemoveSuccess();
-        } else {
-            view.displayDoesNotExist();
-        }
+        service.removeProduct(name);
+        view.displayRemoveSuccess();
         view.pressEnterToContinue();
     }
 
-    private void adjustInventory() {
+    private void adjustInventory() throws VendingMachinePersistenceException, VendingMachineDataValidationException, NoSuchProductException {
         view.displayAdjustInventoryBanner();
-        String name = view.getProductName();
-        if(dao.getProduct(name) != null) {
-            Product product = dao.getProduct(name);
-            Product adjustedProduct = view.getAdjustedInventory(product);
-            dao.adjustInventory(name, adjustedProduct);
-            view.displayEditSuccess();
-        } else {
-            view.displayDoesNotExist();
-        }
-        view.pressEnterToContinue();
+        boolean hasErrors = false;
+        do {
+            String name = view.getProductName();
+            try {
+                Product product = service.getProduct(name);
+                Product adjustedProduct = view.getAdjustedInventory(product);
+                service.adjustInventory(name, adjustedProduct);
+                view.displayEditSuccess();
+                view.pressEnterToContinue();
+                hasErrors = false;
+            } catch (VendingMachineDataValidationException | NoSuchProductException e) {
+                hasErrors = true;
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (hasErrors);
     }
 
-    private void adjustPrice() {
+    private void adjustPrice() throws VendingMachinePersistenceException, VendingMachineDataValidationException, NoSuchProductException {
         view.displayAdjustPriceBanner();
-        String name = view.getProductName();
-        if(dao.getProduct(name) != null) {
-            Product product = dao.getProduct(name);
-            Product adjustedProduct = view.getAdjustedPrice(product);
-            dao.adjustInventory(name, adjustedProduct);
-            view.displayEditSuccess();
-        } else {
-            view.displayDoesNotExist();
-        }
-        view.pressEnterToContinue();
+        boolean hasErrors = false;
+        do {
+            String name = view.getProductName();
+            try {
+                Product product = service.getProduct(name);
+                Product adjustedProduct = view.getAdjustedPrice(product);
+                service.adjustInventory(name, adjustedProduct);
+                view.displayEditSuccess();
+                view.pressEnterToContinue();
+                hasErrors = false;
+            } catch (VendingMachineDataValidationException | NoSuchProductException e) {
+                hasErrors = true;
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (hasErrors);
     }
 
 }

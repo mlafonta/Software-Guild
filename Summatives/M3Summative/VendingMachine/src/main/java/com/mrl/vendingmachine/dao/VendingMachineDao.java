@@ -6,22 +6,27 @@
  */
 package com.mrl.vendingmachine.dao;
 
+import com.mrl.vendingmachine.dto.Coins;
 import com.mrl.vendingmachine.dto.Product;
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface VendingMachineDao {
+    BigDecimal addToBalance(Coins coin);
     
-    List<Product> listProducts();
+    BigDecimal getBalance();
     
-    Product buyProduct(String name);
+    List<Product> listProducts() throws VendingMachinePersistenceException;
     
-    Product getProduct(String name);
+    Product buyProduct(Product product) throws VendingMachinePersistenceException;
     
-    Product addProduct(String name, Product product);
+    Product getProduct(String name) throws VendingMachinePersistenceException;
     
-    Product removeProduct(String name);
+    Product addProduct(String name, Product product) throws VendingMachinePersistenceException;
     
-    Product adjustInventory(String name, Product product);
+    Product removeProduct(String name) throws VendingMachinePersistenceException;
     
-    Product adjustPrice(String name, Product product);
+    Product adjustInventory(String name, Product product) throws VendingMachinePersistenceException;
+    
+    Product adjustPrice(String name, Product product) throws VendingMachinePersistenceException;
 }
