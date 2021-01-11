@@ -7,12 +7,15 @@ package com.mrl.vendingmachine.dao;
 
 import static com.mrl.vendingmachine.dto.Coins.QUARTER;
 import com.mrl.vendingmachine.dto.Product;
+import com.mrl.vendingmachine.service.VendingMachineService;
 import java.io.FileWriter;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
@@ -23,13 +26,16 @@ public class VendingMachineDaoFileImp1Test {
     VendingMachineDao testDao;
 
     public VendingMachineDaoFileImp1Test() {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        testDao = ctx.getBean("vendingMachineDao", VendingMachineDao.class);
     }
 
     @BeforeEach
     public void setUp() throws Exception {
+
         String testFile = "testinventory.txt";
         new FileWriter(testFile);
-        testDao = new VendingMachineDaoFileImp1(testFile);
+
     }
 
     @Test
@@ -155,9 +161,9 @@ public class VendingMachineDaoFileImp1Test {
         BigDecimal price2 = new BigDecimal(".25");
         secondProduct.setPrice(price2);
         secondProduct.setStock(3);
-        
+
         testDao.adjustPrice(first, secondProduct);
-        
+
         assertEquals(price2, testDao.getProduct(first).getPrice());
     }
 }

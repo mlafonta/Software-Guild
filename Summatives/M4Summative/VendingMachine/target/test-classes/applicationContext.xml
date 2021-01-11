@@ -17,6 +17,9 @@
 
     <!-- Bean definitions go here -->
     <bean id="vendingMachineDaoStub" class="com.mrl.vendingmachine.service.VendingMachineDaoStubImp1" />
+    <bean id="vendingMachineDao" class="com.mrl.vendingmachine.dao.VendingMachineDaoFileImp1">
+        <constructor-arg value="testinventory.txt" />
+    </bean>
     <bean id="auditDaoStub" class="com.mrl.vendingmachine.service.VendingMachineAuditDaoStubImp1" />
     <bean id="service" class="com.mrl.vendingmachine.service.VendingMachineServiceImp1">
         <constructor-arg ref="vendingMachineDaoStub" />
