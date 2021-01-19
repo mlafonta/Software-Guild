@@ -1,0 +1,6 @@
+Dr. Pepper::0.58::5
+Sierra Mist::0.99::5
+Coke::0.97::0
+RC Cola::1.25::1
+Pepsi::0.85::2
+Mountain Dew::0.69::3
