@@ -1,0 +1,19 @@
+@startuml
+
+title Sequence for Remove Order
+
+View -> Controller
+Controller -> View: GetOrderDate()
+View -> Controller: LocalDate orderDate
+Controller ->Service: RetrieveOrderDate(OrderDate)
+Service -> Dao: RetrieveOrderDate(OrderDate)
+Dao -> Service: List<Order>
+Service -> Controller: List<Order>
+Controller -> View: GetOrderNumber(List<Order>)
+View -> Controller: int orderNumber
+Controller -> View: ConfirmRemoval(Order)
+View -> Controller: String(Y/N)
+Controller ->Service: RemoveOrder(Order)
+Service -> Dao: RemoveOrder(Order)
+
+@enduml

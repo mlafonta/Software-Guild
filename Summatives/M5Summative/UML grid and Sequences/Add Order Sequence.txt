@@ -1,0 +1,16 @@
+@startuml
+title Sequence Diagram for Add Order
+View -> Controller
+Controller -> View: GetCustomerData()
+View -> Controller: Order
+Controller -> Service: GetPrice(Order)
+Service -> Dao: GetProductInfo(productType)
+Dao -> Service: Product
+Service -> Dao: GetTaxInfo(state)
+Dao -> Service: Tax
+Service -> Controller: Order
+Controller -> View: ConfirmOrder(Order)
+View -> Controller: String(Y/N)
+Controller ->Service: AddOrder(Order)
+Service -> Dao: AddOrder(Order)
+@enduml
