@@ -1,3 +1,4 @@
+
 com\mrl\classroster\dao\ClassRosterDaoFileImp1.class
 com\mrl\classroster\App.class
 com\mrl\classroster\ui\UserIO.class
@@ -11,5 +12,8 @@ com\mrl\classroster\dto\Student.class
 com\mrl\classroster\dao\ClassRosterPersistenceException.class
 com\mrl\classroster\dao\ClassRosterDao.class
 com\mrl\classroster\service\ClassRosterServiceLayerImp1.class
+com\mrl\classroster\dto\Student.class
+com\mrl\classroster\ui\UserIO.class
+com\mrl\classroster\dao\ClassRosterDao.class
 com\mrl\classroster\ui\ClassRosterView.class
 com\mrl\classroster\ui\UserIOConsoleImp1.class
