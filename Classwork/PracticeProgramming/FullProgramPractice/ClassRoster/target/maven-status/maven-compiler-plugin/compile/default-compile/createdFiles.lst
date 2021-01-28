@@ -1,3 +1,17 @@
+
+com\mrl\classroster\dao\ClassRosterDaoFileImp1.class
+com\mrl\classroster\App.class
+com\mrl\classroster\ui\UserIO.class
+com\mrl\classroster\controller\ClassRosterController.class
+com\mrl\classroster\service\ClassRosterDuplicateIdException.class
+com\mrl\classroster\service\ClassRosterServiceLayer.class
+com\mrl\classroster\dao\ClassRosterAuditDao.class
+com\mrl\classroster\dao\ClassRosterAuditDaoFileImp1.class
+com\mrl\classroster\service\ClassRosterDataValidationException.class
+com\mrl\classroster\dto\Student.class
+com\mrl\classroster\dao\ClassRosterPersistenceException.class
+com\mrl\classroster\dao\ClassRosterDao.class
+com\mrl\classroster\service\ClassRosterServiceLayerImp1.class
 com\mrl\classroster\dto\Student.class
 com\mrl\classroster\ui\UserIO.class
 com\mrl\classroster\dao\ClassRosterDao.class
