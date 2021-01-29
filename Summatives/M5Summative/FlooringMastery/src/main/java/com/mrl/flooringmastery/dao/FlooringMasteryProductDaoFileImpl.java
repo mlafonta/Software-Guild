@@ -35,13 +35,6 @@ public class FlooringMasteryProductDaoFileImpl implements FlooringMasteryProduct
 
     private Map<String, Product> productList = new HashMap<>();
 
-    @Override
-    public Product getProductInfo(String productType) throws FileNotFoundException{
-        loadProducts();
-        Product product = productList.get(productType);
-        return product;
-    }
-
     private Product unmarshallProduct(String productAsText) {
         String[] productTokens = productAsText.split(DELIMITER);
         String productType = productTokens[0];

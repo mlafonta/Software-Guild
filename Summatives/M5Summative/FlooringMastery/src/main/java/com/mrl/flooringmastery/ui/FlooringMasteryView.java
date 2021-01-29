@@ -55,14 +55,12 @@ public class FlooringMasteryView {
         io.print("All orders for " + formattedDate + ":");
         Collections.sort(orderList);
         for (Order order : orderList) {
+            io.print("--------------------");
             io.print("Order Number: " + String.valueOf(order.getOrderNumber()));
             io.print("Customer Name: " + order.getCustomerName());
             io.print("Order Total: $" + order.getTotal().toString());
+            io.print("--------------------");
         }
-    }
-
-    public void displayNoOrdersForDateBanner() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void getCustomerName(Order order) {
@@ -157,8 +155,66 @@ public class FlooringMasteryView {
         io.print("Total: $" + order.getTotal());
         io.print("--------------------");
         io.print("CONFIRM?");
-        io.print("1. Yes");
-        return io.readInt("2. No", 1, 2);
-        
+        return io.readInt("Please choose: 1. Yes, 2. No ", 1, 2);
+
     }
+
+    public void displayFutureError() {
+        io.print("Please enter a date in the future.");
+    }
+
+    public void displayUnknownCommandBanner() {
+        io.print("Unknown Command");
+    }
+
+    public void displayEmptyDate() {
+        io.print("No orders exist for that date");
+    }
+
+    public int getOrderNumber(LocalDate date, List<Order> orderList) {
+        int answer = io.readInt("What order number would you like to access?");
+        List<Integer> orderNumbers = orderList.stream()
+                .map((p) -> p.getOrderNumber())
+                .collect(Collectors.toList());
+        boolean validAnswer = false;
+        while (!validAnswer) {
+            if (orderNumbers.contains(answer)) {
+                validAnswer = true;
+            } else {
+                displayOrderListForDate(date, orderList);
+                answer = io.readInt("Please select an order number from the above list.");
+            }
+        }
+        return answer;
+    }
+
+    public int editNameQuery(Order order) {
+        io.print("Current customer name: " + order.getCustomerName());
+        io.print("Would you like to edit this?");
+        return io.readInt("Please choose: 1. Yes, 2. No ", 1, 2);
+    }
+
+    public int editStateQuery(Order order) {
+        io.print("Current state: " + order.getState());
+        io.print("Would you like to edit this?");
+        return io.readInt("Please choose: 1. Yes, 2. No ", 1, 2);
+    }
+
+    public int editProductQuery(Order order) {
+        io.print("Current product type: " + order.getProductType());
+        io.print("Would you like to edit this?");
+        return io.readInt("Please choose: 1. Yes, 2. No ", 1, 2);
+    }
+
+    public int editAreaQuery(Order order) {
+        io.print("Current area: " + order.getArea());
+        io.print("Would you like to edit this?");
+        return io.readInt("Please choose: 1. Yes, 2. No ", 1, 2);
+    }
+
+    public void displayExportSuccess() {
+        io.print("Backup Success. Find export in \"Backup\" folder");
+        io.readString("Press enter to continue");
+    }
+
 }

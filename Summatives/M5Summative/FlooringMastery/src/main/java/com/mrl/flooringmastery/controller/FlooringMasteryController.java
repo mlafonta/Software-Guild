@@ -12,6 +12,7 @@ import com.mrl.flooringmastery.service.FlooringMasteryService;
 import com.mrl.flooringmastery.ui.FlooringMasteryView;
 import com.mrl.flooringmastery.ui.UserExitException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class FlooringMasteryController {
                         unknownCommand();
                 }
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException | UserExitException e) {
             view.displayErrorMessage(e.getMessage());
         }
         view.displayExitMessage();
@@ -70,18 +71,28 @@ public class FlooringMasteryController {
         return view.printMenuAndGetSelection();
     }
 
-    private void displayOrders() {
+    private void displayOrders() throws IOException {
         LocalDate date = view.getDate();
         List<Order> orderList = service.getOrdersForDate(date);
         if (orderList.isEmpty()) {
-            view.displayNoOrdersForDateBanner();
+            view.displayEmptyDate();
+            service.cleanUpEmptyDates(date);
         } else {
             view.displayOrderListForDate(date, orderList);
         }
     }
 
-    private void addOrder() throws FileNotFoundException, UserExitException {
-        LocalDate date = view.getDate();
+    private void addOrder() throws FileNotFoundException, UserExitException, IOException {
+        boolean future = false;
+        LocalDate date = LocalDate.now();
+        while (!future) {
+            date = view.getDate();
+            if (date.isAfter(LocalDate.now())) {
+                future = true;
+            } else {
+                view.displayFutureError();
+            }
+        }
         Order order = service.createNewOrderNumberForDate(date);
         view.getCustomerName(order);
         getState(order);
@@ -103,43 +114,64 @@ public class FlooringMasteryController {
             }
         }
     }
-    
 
-    
-
-    
-
-    private void editOrder() {
+    private void editOrder() throws IOException, UserExitException{
         LocalDate date = view.getDate();
         List<Order> orderList = service.getOrdersForDate(date);
-        view.displayOrderListForDate(orderList);
-        int orderNumber = view.getOrderNumber();
-        Order order = service.retrieveOrder(date, orderNumber);
-        view.getEditedInfo(order);
-        service.calculatePrice(order);
-        int confirmation = view.confirm(order);
-        if (confirmation == 1) {
-            service.editOrder();
+        if (!orderList.isEmpty()) {
+            view.displayOrderListForDate(date, orderList);
+            int orderNumber = view.getOrderNumber(date, orderList);
+            Order order = service.retrieveOrder(date, orderNumber);
+            int nameQuery = view.editNameQuery(order);
+            if(nameQuery == 1) {
+                view.getCustomerName(order);
+            }
+            int stateQuery = view.editStateQuery(order);
+            if(stateQuery == 1) {
+                getState(order);
+            }
+            int productQuery = view.editProductQuery(order);
+            if(productQuery == 1) {
+                getProduct(order);
+            }
+            int areaQuery = view.editAreaQuery(order);
+            if(areaQuery == 1) {
+                view.getArea(order);
+            }
+            service.calculatePrice(order);
+            int confirmation = view.confirm(order, date);
+            if (confirmation == 1) {
+                service.editOrder(date, order);
+            } else {
+                view.displayActionCancelled();
+            }
         } else {
-            view.displayActionCancelled();
+            view.displayEmptyDate();
+            service.cleanUpEmptyDates(date);
         }
     }
 
-    private void removeOrder() {
+    private void removeOrder() throws IOException{
         LocalDate date = view.getDate();
         List<Order> orderList = service.getOrdersForDate(date);
-        view.displayOrderListForDate(orderList);
-        int orderNumber = view.getOrderNumber();
-        Order order = service.retrieveOrder(date, orderNumber);
-        int confirmation = view.confirm(order);
-        if (confirmation == 1) {
-            service.removeOrder();
+        if (!orderList.isEmpty()) {
+            view.displayOrderListForDate(date, orderList);
+            int orderNumber = view.getOrderNumber(date, orderList);
+            Order order = service.retrieveOrder(date, orderNumber);
+            int confirmation = view.confirm(order, date);
+            if (confirmation == 1) {
+                service.removeOrder(order, date);
+                service.cleanUpEmptyDates(date);
+            } else {
+                view.displayActionCancelled();
+            }
         } else {
-            view.displayActionCancelled();
+            view.displayEmptyDate();
+            service.cleanUpEmptyDates(date);
         }
     }
 
-    private void exportData() {
+    private void exportData() throws IOException{
         service.exportData();
         view.displayExportSuccess();
     }

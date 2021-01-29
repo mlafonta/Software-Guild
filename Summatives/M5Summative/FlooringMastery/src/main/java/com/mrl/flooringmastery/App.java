@@ -6,6 +6,7 @@
 package com.mrl.flooringmastery;
 
 import com.mrl.flooringmastery.controller.FlooringMasteryController;
+import com.mrl.flooringmastery.ui.UserExitException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

@@ -15,8 +15,6 @@ import java.util.List;
  */
 public interface FlooringMasteryProductDao {
     
-    Product getProductInfo(String productType) throws FileNotFoundException;
-
     public List<Product> getProductList() throws FileNotFoundException;
 
     public Product getProduct(String productType) throws FileNotFoundException;

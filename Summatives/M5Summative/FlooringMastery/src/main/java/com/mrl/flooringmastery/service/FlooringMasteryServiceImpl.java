@@ -12,6 +12,7 @@ import com.mrl.flooringmastery.dto.Order;
 import com.mrl.flooringmastery.dto.Product;
 import com.mrl.flooringmastery.dto.Tax;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -32,17 +33,17 @@ public class FlooringMasteryServiceImpl implements FlooringMasteryService {
     }
 
     @Override
-    public List<Order> getOrdersForDate(LocalDate date) {
+    public List<Order> getOrdersForDate(LocalDate date) throws IOException {
         return orderDao.displayOrders(date);
     }
 
     @Override
-    public Order createNewOrderNumberForDate(LocalDate date) {
+    public Order createNewOrderNumberForDate(LocalDate date) throws IOException {
         return orderDao.createNewOrderNumber(date);
     }
 
     @Override
-    public List<Tax> getStateList() throws FileNotFoundException{
+    public List<Tax> getStateList() throws FileNotFoundException {
         return taxDao.getStateList();
     }
 
@@ -52,7 +53,7 @@ public class FlooringMasteryServiceImpl implements FlooringMasteryService {
     }
 
     @Override
-    public void calculatePrice(Order order) throws FileNotFoundException{
+    public void calculatePrice(Order order) throws FileNotFoundException {
         Tax tax = taxDao.getTax(order.getState());
         order.setTaxRate(tax.getTaxRate());
         Product product = productDao.getProduct(order.getProductType());
@@ -62,5 +63,36 @@ public class FlooringMasteryServiceImpl implements FlooringMasteryService {
         order.setLaborCost();
         order.setTax();
         order.setTotal();
+    }
+
+    @Override
+    public void addOrder(LocalDate date, Order order) throws IOException {
+        orderDao.addOrder(date, order);
+    }
+
+    @Override
+    public void cleanUpEmptyDates(LocalDate date) throws IOException {
+        orderDao.cleanUpEmptyDates(date);
+    }
+
+    @Override
+    public Order retrieveOrder(LocalDate date, int orderNumber) throws IOException {
+        Order order = orderDao.retrieveOrder(date, orderNumber);
+        return order;
+    }
+
+    @Override
+    public void removeOrder(Order order, LocalDate date) throws IOException {
+        orderDao.removeOrder(date, order.getOrderNumber());
+    }
+
+    @Override
+    public void editOrder(LocalDate date, Order order) throws IOException {
+        orderDao.editOrder(date, order);
+    }
+
+    @Override
+    public void exportData() throws IOException {
+        orderDao.exportData();
     }
 }

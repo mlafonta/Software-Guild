@@ -14,7 +14,6 @@ import java.util.List;
  * @author flafo
  */
 public interface FlooringMasteryTaxDao {
-    Tax getTaxInfo(String state) throws FileNotFoundException;
 
     public List<Tax> getStateList() throws FileNotFoundException;
 

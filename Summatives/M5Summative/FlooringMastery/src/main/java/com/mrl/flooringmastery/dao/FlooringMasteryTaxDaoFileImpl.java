@@ -35,12 +35,6 @@ public class FlooringMasteryTaxDaoFileImpl implements FlooringMasteryTaxDao{
 
     private Map<String, Tax> taxList = new HashMap<>();
 
-    @Override
-    public Tax getTaxInfo(String state) throws FileNotFoundException{
-        loadTaxes();
-        Tax tax = taxList.get(state);
-        return tax;
-    }
 
     private Tax unmarshallTax(String taxAsText) {
         String[] taxTokens = taxAsText.split(DELIMITER);
