@@ -1,0 +1,13 @@
+@startuml
+title Sequence Diagram for Display Orders
+View -> Controller
+Controller -> View: GetOrderDate()
+View -> Controller: LocalDateTime
+Controller -> Service: GetAllOrders(LocalDateTime)
+Service -> Dao: ReadAllOrdersForDate(LocalDateTime)
+Dao -> Service: List<Order>
+Service -> Controller: List<Order>
+Controller -> View: ShowOrderList(List<Order>)
+View -> Controller: void
+@enduml
+

@@ -1,0 +1,101 @@
+@startuml
+top to bottom direction
+package View{
+  interface UserIO{
+  }
+  class UserIOConsoleImpl{
+  }
+  class FlooringMasteryView{
+    -io: UserIO
+  }
+  UserIO <|-right- UserIOConsoleImpl: Implements
+  FlooringMasteryView *-up- UserIO: Composition
+}
+package Controller{
+  class FlooringMasteryController{
+    -view: FlooringMasteryView
+    -service: FlooringMasteryService
+    ----
+    +GetCustomerData()
+    +GetOrderDate()
+    +GetOrderNumber(List<Order> orderListByDate)
+    +RetrieveOrderDate(LocalDate orderDate)
+    +GetPrice(Order order)
+    +AddOrder(Order order)
+    +RemoveOrder(Order order)
+    +ConfirmOrder(Order order)
+    +ConfirmRemoval(Order order)
+    +GetEditedOrder(Order order)
+    +EditOrder(Order order)
+  }
+}
+package Service{
+  interface FlooringMasteryService{
+  }
+  class FlooringMasteryServiceImpl{
+    -dao: FlooringMasteryOrdersDao
+    ----
+    +GetProductInfo(String productType)
+    +GetTaxInfo(String state)
+    +AddOrder(Order order)
+    +RetrieveOrderDate(LocalDate orderDate)
+    +RemoveOrder(Order order)
+    +EditOrder(Order order)
+  }
+  FlooringMasteryService <|-right- FlooringMasteryServiceImpl: Implements
+}
+package DAO{
+  interface FlooringMasteryOrdersDao{
+  }
+  class FlooringMasteryOrdersDaoFolderImpl{
+    -model: List<Order>
+  }
+  interface FlooringMasteryTaxDao{
+  }
+  class FlooringMasteryTaxDaoFileImpl{
+    -model: List<Tax>
+  }
+  interface FlooringMasteryProductDao{
+  }
+  class FlooringMasteryProductDaoFileImpl{
+    -model: List<Product>
+  }
+  FlooringMasteryOrdersDao <|-down- FlooringMasteryOrdersDaoFolderImpl: Implements
+  FlooringMasteryTaxDao <|-down- FlooringMasteryTaxDaoFileImpl: Implements
+  FlooringMasteryProductDao <|-down- FlooringMasteryProductDaoFileImpl: Implemets
+}
+package Model{
+  class Order{
+    -int: orderNumber
+    -String: customerName
+    -String: state
+    -BigDecimal: taxRate
+    -String: productType
+    -BigDecimal: area
+    -BigDecimal: costPerSquareFoot
+    -BigDecimal: laborCostPerSquareFoot
+    -BigDecimal: materialCost
+    -BigDecimal: laborCost
+    -BigDecimal: tax
+    -BigDecimal: total
+  }
+  class Tax{
+    -String: stateAbbreviation
+    -String: stateName
+    -BigDecimal: taxRate
+  }
+  class Product{
+    -String: productType
+    -BigDecimal: costPerSquareFoot
+    -BigDecimal: laborCostPerSquareFoot
+  }
+}
+Controller *-up- View: Composition
+Controller *-down- Service: Composition
+FlooringMasteryServiceImpl *-down- FlooringMasteryOrdersDao: Composition
+FlooringMasteryServiceImpl *-down- FlooringMasteryTaxDao: Composition
+FlooringMasteryServiceImpl *-down- FlooringMasteryProductDao: Compostion
+FlooringMasteryOrdersDaoFolderImpl *-down- Order: Composition
+FlooringMasteryTaxDaoFileImpl *-down- Tax: Composition
+FlooringMasteryProductDaoFileImpl *-down- Product: Composition
+@enduml
