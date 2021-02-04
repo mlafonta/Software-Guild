@@ -11,9 +11,13 @@ import com.mrl.flooringmastery.dao.FlooringMasteryTaxDao;
 import com.mrl.flooringmastery.dto.Order;
 import com.mrl.flooringmastery.dto.Product;
 import com.mrl.flooringmastery.dto.Tax;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -38,8 +42,13 @@ public class FlooringMasteryServiceImpl implements FlooringMasteryService {
     }
 
     @Override
-    public Order createNewOrderNumberForDate(LocalDate date) throws IOException {
-        return orderDao.createNewOrderNumber(date);
+    public Order createNewOrderNumber() throws IOException {
+        List<Order> allOrders = orderDao.retrieveAll();
+        int currentOrderNumber = allOrders.stream()
+                .mapToInt((p) -> p.getOrderNumber())
+                .max().getAsInt();
+        Order newOrder = new Order(currentOrderNumber + 1);
+        return newOrder;
     }
 
     @Override

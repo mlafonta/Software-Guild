@@ -30,17 +30,14 @@ import java.util.Scanner;
 public class FlooringMasteryOrdersDaoFolderImpl implements FlooringMasteryOrdersDao {
 
     private final String ORDER_FOLDER;
-    private final String ORDER_NUMBER_FILE;
     public static final String DELIMITER = "::";
     private Map<Integer, Order> orders = new HashMap<>();
 
     public FlooringMasteryOrdersDaoFolderImpl() {
-        ORDER_NUMBER_FILE = "CurrentOrderNumber.txt";
         ORDER_FOLDER = "Orders/";
     }
 
-    public FlooringMasteryOrdersDaoFolderImpl(String orderNumberTextFile, String orderFolderTextFile) {
-        ORDER_NUMBER_FILE = orderNumberTextFile;
+    public FlooringMasteryOrdersDaoFolderImpl(String orderFolderTextFile) {
         ORDER_FOLDER = orderFolderTextFile;
     }
 
@@ -92,10 +89,6 @@ public class FlooringMasteryOrdersDaoFolderImpl implements FlooringMasteryOrders
         return order;
     }
 
-    @Override
-    public void exportOrder() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     private void loadDate(LocalDate date) throws IOException {
         String dateString = date.format(DateTimeFormatter.ofPattern("MMddyyyy"));
@@ -117,7 +110,7 @@ public class FlooringMasteryOrdersDaoFolderImpl implements FlooringMasteryOrders
         try {
             scanner = new Scanner(new BufferedReader(new FileReader(dateFile)));
         } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("This is impossible to reach, I literally just created any file that exists");
+            throw new FileNotFoundException();
         }
         String currentLine;
         Order currentOrder;
@@ -128,29 +121,6 @@ public class FlooringMasteryOrdersDaoFolderImpl implements FlooringMasteryOrders
             orders.put(currentOrder.getOrderNumber(), currentOrder);
         }
         scanner.close();
-    }
-
-    @Override
-    public Order createNewOrderNumber(LocalDate date) throws IOException {
-
-        Scanner scanner;
-        try {
-            scanner = new Scanner(new BufferedReader(new FileReader(ORDER_NUMBER_FILE)));
-        } catch (FileNotFoundException e) {
-            throw new FileNotFoundException();
-        }
-        int currentOrderNumber = Integer.parseInt(scanner.nextLine());
-        Order order = new Order(currentOrderNumber + 1);
-        PrintWriter out;
-        try {
-            out = new PrintWriter(new FileWriter(ORDER_NUMBER_FILE));
-        } catch (IOException e) {
-            throw new IOException();
-        }
-        out.println(currentOrderNumber + 1);
-        out.flush();
-        out.close();
-        return order;
     }
 
     private void writeToFile(LocalDate date) throws IOException {
@@ -279,5 +249,29 @@ public class FlooringMasteryOrdersDaoFolderImpl implements FlooringMasteryOrders
             scanner.close();
         }
         out.close();
+    }
+
+    @Override
+    public List<Order> retrieveAll() throws IOException {
+        File orderFile = new File(ORDER_FOLDER);
+        File[] orderFileContents = orderFile.listFiles();
+        Scanner scanner;
+        List<Order> allOrders = new ArrayList<>();
+        for (File currentFile : orderFileContents) {
+            try {
+                scanner = new Scanner(new BufferedReader(new FileReader(currentFile)));
+            } catch (FileNotFoundException e) {
+                throw new FileNotFoundException();
+            }
+            String currentLine;
+            Order order;
+            scanner.nextLine();
+            while (scanner.hasNextLine()) {
+                currentLine = scanner.nextLine();
+                order = unmarshallOrder(currentLine);
+                allOrders.add(order);
+            }
+        }
+        return allOrders;
     }
 }

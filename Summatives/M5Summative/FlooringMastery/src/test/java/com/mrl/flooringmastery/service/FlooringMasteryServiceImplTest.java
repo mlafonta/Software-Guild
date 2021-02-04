@@ -5,12 +5,12 @@
  */
 package com.mrl.flooringmastery.service;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
+import com.mrl.flooringmastery.dto.Order;
+import java.math.BigDecimal;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
@@ -18,28 +18,26 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class FlooringMasteryServiceImplTest {
     
+    private FlooringMasteryService service;
     public FlooringMasteryServiceImplTest() {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        service = ctx.getBean("service", FlooringMasteryService.class);
     }
     
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
-    }
-
     @Test
-    public void testSomeMethod() {
-        fail("The test case is a prototype.");
+    public void testCreateOrderNumber() throws Exception {
+        Order order = service.createNewOrderNumber();
+        assertEquals(3, order.getOrderNumber());
     }
     
+    @Test
+    public void testCalculate() throws Exception {
+        Order order = new Order(1);
+        order.setCustomerName("Maxwell");
+        order.setState("Texas");
+        order.setProductType("Wood");
+        order.setArea(BigDecimal.TEN);
+        service.calculatePrice(order);
+        BigDecimal bd = new BigDecimal("1");
+    }
 }

@@ -17,15 +17,16 @@
 
     <!-- Bean definitions go here -->
     <bean id="flooringMasteryOrdersDao" class="com.mrl.flooringmastery.dao.FlooringMasteryOrdersDaoFolderImpl">
-        <constructor-arg value="/TestOrders" />            
-        <constructor-arg value="TestOrderNumber.txt" />
+        <constructor-arg value="C:\Repos\online-java-2019-lafoma01\Summatives\M5Summative\FlooringMastery\src\test\resources\TestOrders/" />            
     </bean>
     <bean id="flooringMasteryTaxDao" class="com.mrl.flooringmastery.dao.FlooringMasteryTaxDaoFileImpl" />
     <bean id="flooringMasteryProductDao" class="com.mrl.flooringmastery.dao.FlooringMasteryProductDaoFileImpl" />
     <bean id="flooringMasteryOrdersDaoStub" class="com.mrl.flooringmastery.service.FlooringMasteryOrdersDaoStubImpl" />
+    <bean id="flooringMasteryTaxDaoStub" class="com.mrl.flooringmastery.service.FlooringMasteryTaxDaoStubImpl" />
+    <bean id="flooringMasteryProductDaoStub" class="com.mrl.flooringmastery.service.FlooringMasteryProductDaoStubImpl" />
     <bean id="service" class="com.mrl.flooringmastery.service.FlooringMasteryServiceImpl">
-        <constructor-arg ref="flooringMasteryTaxDao" />
-        <constructor-arg ref="flooringMasteryProductDao" />
+        <constructor-arg ref="flooringMasteryTaxDaoStub" />
+        <constructor-arg ref="flooringMasteryProductDaoStub" />
         <constructor-arg ref="flooringMasteryOrdersDaoStub" />
     </bean>   
 </beans>

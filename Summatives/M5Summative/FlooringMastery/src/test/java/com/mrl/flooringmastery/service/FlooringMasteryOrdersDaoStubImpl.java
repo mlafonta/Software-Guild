@@ -9,6 +9,7 @@ import com.mrl.flooringmastery.dao.FlooringMasteryOrdersDao;
 import com.mrl.flooringmastery.dto.Order;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,50 +17,54 @@ import java.util.List;
  * @author flafo
  */
 public class FlooringMasteryOrdersDaoStubImpl implements FlooringMasteryOrdersDao {
-
+    public Order order1;
+    public Order order2;
     @Override
     public Order retrieveOrder(LocalDate date, int orderNumber) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return order1;
     }
 
     @Override
     public List<Order> displayOrders(LocalDate date) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Order> orderList = new ArrayList<>();
+        orderList.add(order1);
+        return orderList;
     }
 
-    @Override
-    public Order createNewOrderNumber(LocalDate date) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 
     @Override
     public Order addOrder(LocalDate date, Order order) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return order1;
     }
 
     @Override
     public Order editOrder(LocalDate date, Order order) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return order1;
     }
 
     @Override
     public Order removeOrder(LocalDate date, int orderNumber) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return order1;
     }
 
-    @Override
-    public void exportOrder() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public void cleanUpEmptyDates(LocalDate date) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void exportData() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Order> retrieveAll() throws IOException {
+        order1 = new Order(1);
+        order2 = new Order(2);
+        List<Order> orderList = new ArrayList<>();
+        orderList.add(order1);
+        orderList.add(order2);
+        return orderList;
     }
     
 }

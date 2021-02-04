@@ -20,18 +20,16 @@ public interface FlooringMasteryOrdersDao {
 
     List<Order> displayOrders(LocalDate date) throws IOException;
 
-    Order createNewOrderNumber(LocalDate date) throws IOException;
-
     Order addOrder(LocalDate date, Order order) throws IOException;
 
     Order editOrder(LocalDate date, Order order) throws IOException;
 
     Order removeOrder(LocalDate date, int orderNumber) throws IOException;
 
-    void exportOrder() throws IOException;
-
     void cleanUpEmptyDates(LocalDate date) throws IOException;
     
     void exportData() throws IOException;
+
+    public List<Order> retrieveAll() throws IOException;
 
 }

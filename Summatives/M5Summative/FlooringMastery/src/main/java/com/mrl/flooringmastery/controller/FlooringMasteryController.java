@@ -93,7 +93,7 @@ public class FlooringMasteryController {
                 view.displayFutureError();
             }
         }
-        Order order = service.createNewOrderNumberForDate(date);
+        Order order = service.createNewOrderNumber();
         view.getCustomerName(order);
         getState(order);
         if (order.getState() != null) {

@@ -21,7 +21,7 @@ public interface FlooringMasteryService {
 
     public List<Order> getOrdersForDate(LocalDate date) throws IOException;
 
-    public Order createNewOrderNumberForDate(LocalDate date) throws IOException;
+    public Order createNewOrderNumber() throws IOException;
 
     public List<Tax> getStateList() throws FileNotFoundException;
 
