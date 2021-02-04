@@ -38,6 +38,8 @@ public class FlooringMasteryServiceImplTest {
         order.setProductType("Wood");
         order.setArea(BigDecimal.TEN);
         service.calculatePrice(order);
-        BigDecimal bd = new BigDecimal("1");
+        BigDecimal bd = new BigDecimal("220.00");
+        
+        assertEquals(bd, order.getTotal());
     }
 }
