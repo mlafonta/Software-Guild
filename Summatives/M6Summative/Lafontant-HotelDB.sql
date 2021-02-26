@@ -5,35 +5,29 @@ CREATE DATABASE HotelDB;
 USE HotelDB;
 
 CREATE TABLE Room (
-	RoomId INT PRIMARY KEY,
+	RoomNumber INT PRIMARY KEY,
     ADAAccess BOOL NOT NULL,
-    RoomTypeId INT NOT NULL
+    RoomType VARCHAR(10) NOT NULL
 );
 
 CREATE TABLE RoomType (
-	RoomTypeId INT PRIMARY KEY AUTO_INCREMENT,
-    Type VARCHAR(10) NOT NULL,
+	RoomType VARCHAR(10) PRIMARY KEY,
     StandardOccupancy INT NOT NULL,
     MaximumOccupancy INT NOT NULL,
-    ExtraPersonCharge DECIMAL (7, 2) NULL,
-    BasePrice DECIMAL(7, 2) NOT NULL
+    ExtraPersonCharge DECIMAL (5, 2) NULL,
+    BasePrice DECIMAL(6, 2) NOT NULL
 );
 
 CREATE TABLE RoomAmenity (
-	RoomId INT,
-    AmenityId INT
+	RoomNumber INT,
+    AmenityType VARCHAR(50)
 );
 
 CREATE TABLE Amenity (
-	AmenityId INT PRIMARY KEY AUTO_INCREMENT,
-    Type VARCHAR(50) NOT NULL,
+	AmenityType VARCHAR(50) PRIMARY KEY,
     Upcharge DECIMAL(7, 2) NULL
 );
 
-CREATE TABLE RoomReservation (
-	ReservationId INT,
-    RoomId INT
-);
 
 CREATE TABLE Reservation (
 	ReservationId INT PRIMARY KEY AUTO_INCREMENT,
@@ -41,7 +35,9 @@ CREATE TABLE Reservation (
     Adults INT NOT NULL,
     Children INT NULL,
     StartDate DATE NOT NULL,
-    EndDate DATE NOT NULL
+    EndDate DATE NOT NULL,
+    RoomNumber INT NOT NULL,
+    TotalCost DECIMAL(7, 2) NOT NULL
 );
 
 CREATE TABLE Guest (
@@ -50,34 +46,29 @@ CREATE TABLE Guest (
     LastName VARCHAR(50) NOT NULL,
     Address VARCHAR(100) NOT NULL,
     City VARCHAR(100) NOT NULL,
-    State VARCHAR(20) NOT NULL,
-    Zip VARCHAR(10) NOT NULL,
-     
-    Phone VARCHAR(15) NOT NULL
+    State CHAR(2) NOT NULL,
+    Zip CHAR(5) NOT NULL,     
+    Phone CHAR(14) NOT NULL
 );
 
 ALTER TABLE Room
 	ADD CONSTRAINT fk_Room_RoomType
-		FOREIGN KEY (RoomTypeId)
-        REFERENCES RoomType(RoomTypeId);
+		FOREIGN KEY (RoomType)
+        REFERENCES RoomType(RoomType);
 
 ALTER TABLE Reservation
 	ADD CONSTRAINT fk_Reservation_Guest
 		FOREIGN KEY (GuestId)
-        REFERENCES Guest(GuestId);
+        REFERENCES Guest(GuestId),
+	ADD CONSTRAINT
+		FOREIGN KEY (RoomNumber)
+        REFERENCES Room(RoomNumber);
         
 ALTER TABLE RoomAmenity
 	ADD CONSTRAINT fk_RoomAmenity_Room
-		FOREIGN KEY (RoomId)
-        REFERENCES Room(RoomId),
+		FOREIGN KEY (RoomNumber)
+        REFERENCES Room(RoomNumber),
 	ADD CONSTRAINT fk_RoomAmenity_Amenity
-		FOREIGN KEY (AmenityId)
-        REFERENCES Amenity(AmenityId);
+		FOREIGN KEY (AmenityType)
+        REFERENCES Amenity(AmenityType);
         
-ALTER TABLE RoomReservation
-	ADD CONSTRAINT fk_RoomReservation_Room
-    	FOREIGN KEY (RoomId)
-        REFERENCES Room(RoomId),
-	ADD CONSTRAINT fk_RoomReservation_Reservation
-		FOREIGN KEY (ReservationId)
-        REFERENCES Reservation(ReservationId);

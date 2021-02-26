@@ -5,13 +5,12 @@ USE HOTELDB;
 
 SELECT
 	CONCAT(g.FirstName, ' ', g.LastName) GuestName,
-    ro.RoomId RoomNumber,
+    ro.RoomNumber RoomNumber,
     re.StartDate StartDate,
     re.EndDate EndDate
 FROM Reservation re
 JOIN Guest g ON g.GuestId = re.GuestId
-JOIN RoomReservation rr ON rr.ReservationId = re.ReservationId
-JOIN Room ro ON ro.RoomId = rr.RoomId
+JOIN Room ro ON ro.RoomNumber = re.RoomNumber
 WHERE re.EndDate BETWEEN '2023-07-01' AND '2023-07-31';
 
 -- RESULTS:
@@ -25,29 +24,27 @@ WHERE re.EndDate BETWEEN '2023-07-01' AND '2023-07-31';
 
 SELECT
 	CONCAT(g.FirstName, ' ', g.LastName) GuestName,
-    ro.RoomId RoomNumber,
+    ro.RoomNumber RoomNumber,
     re.StartDate StartDate,
     re.EndDate EndDate
 FROM Reservation re
 JOIN Guest g ON g.GuestId = re.GuestId
-JOIN RoomReservation rr ON rr.ReservationId = re.ReservationId
-JOIN Room ro ON ro.RoomId = rr.RoomId
-JOIN RoomAmenity ra ON ra.RoomId = ro.RoomId
-JOIN Amenity a ON ra.AmenityId = a.AmenityId
-WHERE a.AmenityId = 2;	
+JOIN Room ro ON ro.RoomNumber = re.RoomNumber
+JOIN RoomAmenity ra ON ra.RoomNumber = ro.RoomNumber
+WHERE ra.AmenityType LIKE 'Jacuzzi';	
 
 -- RESULTS:
--- Maxwell Lafontant	205	2023-06-28	2023-07-02
--- Wilfred Vise	207	2023-04-23	2023-04-24
--- Duane Cullison	305	2023-02-22	2023-02-24
--- Bettyann Seery	305	2023-08-30	2023-09-01
 -- Maxwell Lafontant	307	2023-03-17	2023-03-20
--- Karie Yang	201	2023-03-06	2023-03-07
+-- Maxwell Lafontant	205	2023-06-28	2023-07-02
+-- Mack Simmer	301	2023-11-22	2023-11-25
 -- Bettyann Seery	203	2023-02-05	2023-02-10
+-- Bettyann Seery	303	2023-07-28	2023-07-29
+-- Bettyann Seery	305	2023-08-30	2023-09-01
+-- Duane Cullison	305	2023-02-22	2023-02-24
+-- Karie Yang	201	2023-03-06	2023-03-07
 -- Karie Yang	203	2023-09-13	2023-09-15
 -- Walter Holaway	301	2023-04-09	2023-04-13
--- Mack Simmer	301	2023-11-22	2023-11-25
--- Bettyann Seery	303	2023-07-28	2023-07-29
+-- Wilfred Vise	207	2023-04-23	2023-04-24
 
 -- 3. Write a query that returns all the rooms reserved for a specific guest, 
 -- including the guest's name, the room(s) reserved, the starting date of the reservation, 
@@ -55,13 +52,12 @@ WHERE a.AmenityId = 2;
 
 SELECT
 	CONCAT(g.FirstName, ' ', g.LastName) GuestName,
-    ro.RoomId RoomNumber,
+    ro.RoomNumber RoomNumber,
     (re.Adults + (IFNULL(re.Children, 0))) TotalGuests,
     re.StartDate StartDate
 FROM Reservation re
 JOIN Guest g ON g.GuestId = re.GuestId
-JOIN RoomReservation rr ON rr.ReservationId = re.ReservationId
-JOIN Room ro ON ro.RoomId = rr.RoomId
+JOIN Room ro ON ro.RoomNumber = re.RoomNumber
 WHERE g.FirstName = 'Bettyann' AND g.LastName = 'Seery';
 
 -- RESULTS:
@@ -73,61 +69,56 @@ WHERE g.FirstName = 'Bettyann' AND g.LastName = 'Seery';
 -- The results should include all rooms, whether or not there is a reservation associated with the room.
 
 SELECT
-	ro.RoomId RoomNumber,
+	ro.RoomNumber RoomNumber,
     re.ReservationId ReservationNumber,    
-	((rt.BasePrice + SUM(IFNULL(a.Upcharge, 0)) + (IFNULL((IF(re.Adults > rt.StandardOccupancy, (re.Adults - rt.StandardOccupancy), 0) * rt.ExtraPersonCharge), 0))) * DATEDIFF(re.EndDate, re.StartDate)) Price
+	-- I'm leaving this here as a comment because I'm proud of the dumb, unnecesary math I did((rt.BasePrice + SUM(IFNULL(a.Upcharge, 0)) + (IFNULL((IF(re.Adults > rt.StandardOccupancy, (re.Adults - rt.StandardOccupancy), 0) * rt.ExtraPersonCharge), 0))) * DATEDIFF(re.EndDate, re.StartDate)) Price
+	re.TotalCost TotalCost
 From Room ro
-JOIN RoomType rt ON ro.RoomTypeId = rt.RoomTypeId
-JOIN RoomAmenity ra ON ra.RoomId = ro.RoomId
-JOIN Amenity a ON a.AmenityId = ra.AmenityId
-LEFT JOIN RoomReservation rr ON rr.RoomId = ro.RoomId
-LEFT JOIN Reservation re ON re.ReservationId = rr.ReservationId
-GROUP BY re.ReservationId, ro.RoomId
-ORDER BY ro.RoomId;
+LEFT JOIN Reservation re ON re.RoomNumber = ro.RoomNumber
+ORDER BY ro.RoomNumber;
 
 -- RESULTS:
--- 201	4	199.99
+-- 	201	4	199.99
 -- 202	7	349.98
 -- 203	2	999.95
--- 203	20	399.98
--- 204	15	184.99
--- 205	14	699.96
+-- 203	21	399.98
+-- 204	16	184.99
+-- 205	15	699.96
 -- 206	12	599.96
--- 206	22	449.97
+-- 206	23	449.97
 -- 207	10	174.99
--- 208	12	599.96
--- 208	19	149.99
+-- 208	13	599.96
+-- 208	20	149.99
 -- 301	9	799.96
--- 301	22	659.97
+-- 301	24	599.97
 -- 302	6	924.95
--- 302	23	699.96
--- 303	17	199.99
--- 304	13	184.99
+-- 302	25	699.96
+-- 303	18	199.99
+-- 304	14	184.99
 -- 305	3	349.98
--- 305	18	349.98
+-- 305	19	349.98
 -- 306		
 -- 307	5	524.97
 -- 308	1	299.98
 -- 401	11	1199.97
--- 401	16	1259.97
--- 401	21	1199.97
--- 402		 
+-- 401	17	1259.97
+-- 401	22	1199.97
+-- 402				 
 
 -- 5. Write a query that returns all the rooms accommodating at 
 -- least three guests and that are reserved on any date in April 2023.
 
 SELECT
-	ro.RoomId RoomNumber,
+	ro.RoomNumber RoomNumber,
     SUM(re.Adults + IFNULL(re.Children, 0)) NumberOfGuests,
     re.StartDate CheckInDate
 FROM Room ro
-INNER JOIN RoomReservation rr ON ro.RoomId = rr.RoomId
-INNER JOIN Reservation re ON re.ReservationId = rr.ReservationId
-GROUP BY ro.RoomId
+INNER JOIN Reservation re ON re.RoomNumber = ro.RoomNumber
+GROUP BY ro.RoomNumber
 HAVING NumberOfGuests > 2 AND re.StartDate BETWEEN '2023-04-01' AND '2023-04-30';
 
 -- RESULTS:
--- 301	7	2023-04-09
+-- 301	5	2023-04-09
 
 -- 6. Write a query that returns a list of all guest names and the number of reservations per guest, 
 -- sorted starting with the guest with the most reservations and then by the guest's name.
