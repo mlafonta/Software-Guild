@@ -110,15 +110,15 @@ ORDER BY ro.RoomNumber;
 
 SELECT
 	ro.RoomNumber RoomNumber,
-    SUM(re.Adults + IFNULL(re.Children, 0)) NumberOfGuests,
-    re.StartDate CheckInDate
+    (re.Adults + IFNULL(re.Children, 0)) NumberOfGuests,
+    re.StartDate CheckInDate,
+    re.EndDate CheckOutDate
 FROM Room ro
 INNER JOIN Reservation re ON re.RoomNumber = ro.RoomNumber
 GROUP BY ro.RoomNumber
-HAVING NumberOfGuests > 2 AND re.StartDate BETWEEN '2023-04-01' AND '2023-04-30';
+HAVING NumberOfGuests > 2 AND (re.StartDate BETWEEN '2023-04-01' AND '2023-04-30' OR re.EndDate BETWEEN '2023-04-01' AND '2023-04-30');
 
 -- RESULTS:
--- 301	5	2023-04-09
 
 -- 6. Write a query that returns a list of all guest names and the number of reservations per guest, 
 -- sorted starting with the guest with the most reservations and then by the guest's name.

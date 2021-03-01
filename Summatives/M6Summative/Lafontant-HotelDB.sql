@@ -20,7 +20,8 @@ CREATE TABLE RoomType (
 
 CREATE TABLE RoomAmenity (
 	RoomNumber INT,
-    AmenityType VARCHAR(50)
+    AmenityType VARCHAR(50),
+    PRIMARY KEY pk_RoomAmenity(RoomNumber, AmenityType)
 );
 
 CREATE TABLE Amenity (
