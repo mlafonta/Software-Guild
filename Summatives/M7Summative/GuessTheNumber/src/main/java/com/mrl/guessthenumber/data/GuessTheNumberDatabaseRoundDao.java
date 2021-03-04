@@ -53,12 +53,6 @@ public class GuessTheNumberDatabaseRoundDao implements GuessTheNumberRoundDao {
     }
 
     @Override
-    public boolean deleteRoundByNumber(int number) {
-        final String sql = "DELETE FROM round WHERE roundNumber = ?;";
-        return jdbc.update(sql, number) > 0;
-    }
-
-    @Override
     public List<Round> getAllRoundsByGameId(int id) {
         final String sql = "SELECT roundNumber, guess, result, time, gameId FROM round WHERE gameId = ? ORDER BY time;";
         return jdbc.query(sql, new RoundMapper(), id);

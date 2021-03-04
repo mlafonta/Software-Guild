@@ -10,6 +10,7 @@ import com.mrl.guessthenumber.data.GuessTheNumberRoundDao;
 import com.mrl.guessthenumber.models.Game;
 import com.mrl.guessthenumber.models.Round;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,8 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
     public Game createGame() {
         Random random = new Random();
         Game game = new Game();
-        String answer = String.valueOf(random.nextInt(10000));
+        int answerWithoutLeadingZerosIfItsLessThanOneThousand = random.nextInt(10000);
+        String answer = String.format("%04d", answerWithoutLeadingZerosIfItsLessThanOneThousand);
         game.setAnswer(answer);
         game.setFinished(false);
         gameDao.createGame(game);
@@ -45,25 +47,20 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
         Game game = gameDao.findGameById(gameId);
         int exactMatches = 0;
         int partialMatches = 0;
-        StringBuilder sb = new StringBuilder(guess);
         String answer = game.getAnswer();
-        for (int i = 0; i < sb.length(); i++) {
-            if (sb.charAt(i) == answer.charAt(i)) {
+        for (int i = 0; i < answer.length(); i++) {
+            String charAsString = String.valueOf(guess.charAt(i));
+            if (guess.charAt(i) == answer.charAt(i)) {
                 exactMatches++;
-                sb.deleteCharAt(i);
-            }
-        }
-        if(exactMatches == answer.length()) {
-            game.setFinished(true);
-            gameDao.updateGame(game);    
-        }
-        for (int j = 0; j < sb.length(); j++) {
-            String charAsString = String.valueOf(sb.charAt(j));
-            if (answer.contains(charAsString)) {
+            } else if (answer.contains(charAsString) && guess.charAt(i) != answer.charAt(i)) {
                 partialMatches++;
             }
         }
-        String results = "e:" + exactMatches + "p:" + partialMatches;
+        if (exactMatches == answer.length()) {
+            game.setFinished(true);
+            gameDao.updateGame(game);
+        }
+        String results = "e:" + exactMatches + ":" + "p:" + partialMatches;
         Round round = new Round();
         round.setGuess(guess);
         round.setResult(results);

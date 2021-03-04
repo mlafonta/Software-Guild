@@ -63,7 +63,7 @@ public class GuessTheNumberDatabaseGameDao implements GuessTheNumberGameDao {
 
     @Override
     public boolean updateGame(Game game) {
-        final String sql = "UPDATE game SET finished = ? WHERE id = ?;";
+        final String sql = "UPDATE game SET finished = ? WHERE gameId = ?;";
         return jdbc.update(sql, game.isFinished(), game.getGameId()) > 0;
     }
 

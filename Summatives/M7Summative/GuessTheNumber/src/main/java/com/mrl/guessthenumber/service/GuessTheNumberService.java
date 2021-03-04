@@ -23,4 +23,5 @@ public interface GuessTheNumberService {
     Game listGameById(int id);
     
     List<Round> ListRoundsByGameId(int id);
+    
 }
