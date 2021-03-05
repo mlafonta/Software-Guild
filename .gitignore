@@ -441,6 +441,9 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/Summatives/M7Summative/GuessTheNumber/target/
+/Classwork/PracticeProgramming/JDBCTComplexExampleStarter/nbproject/
+/Summatives/M7Summative/GuessTheNumber/nbproject/
 /Summatives/M3Summative/VendingMachine/target/
 /Summatives/M3Summative/VendingMachine/nbproject/
 /Summatives/M2Summative/DVDLibrary/target/
