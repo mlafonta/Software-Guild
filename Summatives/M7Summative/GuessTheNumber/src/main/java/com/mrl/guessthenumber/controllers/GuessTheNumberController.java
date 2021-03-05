@@ -38,9 +38,9 @@ public class GuessTheNumberController {
         return service.createGame();
     }
     
-    @PostMapping("/guess/{id}")
-    public Round guess(@RequestBody String guess, @PathVariable int id) {
-        return service.makeGuess(guess, id);
+    @PostMapping("/guess")
+    public Round guess(@RequestBody Round round) {
+        return service.makeGuess(round);
     }
     
     @GetMapping("/game")

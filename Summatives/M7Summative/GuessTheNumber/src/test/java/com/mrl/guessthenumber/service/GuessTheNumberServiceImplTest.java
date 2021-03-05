@@ -66,7 +66,10 @@ public class GuessTheNumberServiceImplTest {
         Game game2 = service.createGame();
         List<Game> games = service.listAllGames();;
         assertEquals(2, games.size());
-        assertEquals(games.get(1).getGameId(), game2.getGameId());
+        assertEquals(games.get(1).getGameId(), game2.getGameId());        
+        assertTrue(game.getAnswer().charAt(0) != game.getAnswer().charAt(1) &&game.getAnswer().charAt(0) != game.getAnswer().charAt(2) && game.getAnswer().charAt(0)!= game.getAnswer().charAt(3));
+        assertTrue(game.getAnswer().charAt(1) != game.getAnswer().charAt(2) && game.getAnswer().charAt(1) != game.getAnswer().charAt(3));
+        assertTrue(game.getAnswer().charAt(2) != game.getAnswer().charAt(3));
     }
 
     @Test
@@ -74,9 +77,15 @@ public class GuessTheNumberServiceImplTest {
         Game game = new Game();
         game.setAnswer("1234");
         game = gameDao.createGame(game);
-        Round round = service.makeGuess("1400", game.getGameId());
+        Round round = new Round();
+        round.setGuess("1400");
+        round.setGameId(game.getGameId());
+        round = service.makeGuess(round);
         assertEquals("e:1:p:1", round.getResult());
-        Round round2 = service.makeGuess("1234", game.getGameId());
+        Round round2 = new Round();
+        round2.setGuess("1234");
+        round2.setGameId(game.getGameId());
+        round2 = service.makeGuess(round2);
         assertEquals("e:4:p:0", round2.getResult());
         assertTrue(service.listGameById(game.getGameId()).isFinished());
     }

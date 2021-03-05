@@ -33,8 +33,20 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
     public Game createGame() {
         Random random = new Random();
         Game game = new Game();
-        int answerWithoutLeadingZerosIfItsLessThanOneThousand = random.nextInt(10000);
-        String answer = String.format("%04d", answerWithoutLeadingZerosIfItsLessThanOneThousand);
+        int int1 = random.nextInt(10);
+        int int2 = random.nextInt(10);
+        while (int2 == int1) {
+            int2 = random.nextInt(10);
+        }
+        int int3 = random.nextInt(10);
+        while (int3 == int1 || int3 == int2) {
+            int3 = random.nextInt(10);
+        }
+        int int4 = random.nextInt(10);
+        while (int4 == int1 || int4 == int2 || int4 == int3) {
+            int4 = random.nextInt(10);
+        }
+        String answer = (String.valueOf(int1) + String.valueOf(int2) + String.valueOf(int3) + String.valueOf(int4));
         game.setAnswer(answer);
         game.setFinished(false);
         gameDao.createGame(game);
@@ -43,16 +55,16 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
     }
 
     @Override
-    public Round makeGuess(String guess, int gameId) {
-        Game game = gameDao.findGameById(gameId);
+    public Round makeGuess(Round round) {
+        Game game = gameDao.findGameById(round.getGameId());
         int exactMatches = 0;
         int partialMatches = 0;
         String answer = game.getAnswer();
         for (int i = 0; i < answer.length(); i++) {
-            String charAsString = String.valueOf(guess.charAt(i));
-            if (guess.charAt(i) == answer.charAt(i)) {
+            String charAsString = String.valueOf(round.getGuess().charAt(i));
+            if (round.getGuess().charAt(i) == answer.charAt(i)) {
                 exactMatches++;
-            } else if (answer.contains(charAsString) && guess.charAt(i) != answer.charAt(i)) {
+            } else if (answer.contains(charAsString) && round.getGuess().charAt(i) != answer.charAt(i)) {
                 partialMatches++;
             }
         }
@@ -61,11 +73,8 @@ public class GuessTheNumberServiceImpl implements GuessTheNumberService {
             gameDao.updateGame(game);
         }
         String results = "e:" + exactMatches + ":" + "p:" + partialMatches;
-        Round round = new Round();
-        round.setGuess(guess);
         round.setResult(results);
         round.setTime(LocalDateTime.now());
-        round.setGameId(gameId);
         roundDao.addRound(round);
         return round;
 

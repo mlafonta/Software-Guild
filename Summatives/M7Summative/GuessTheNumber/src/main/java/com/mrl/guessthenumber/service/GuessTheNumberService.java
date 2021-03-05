@@ -16,7 +16,7 @@ import java.util.List;
 public interface GuessTheNumberService {
     Game createGame();
     
-    Round makeGuess(String guess, int gameId);
+    Round makeGuess(Round round);
     
     List<Game> listAllGames();
     
