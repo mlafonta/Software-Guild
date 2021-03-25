@@ -1,0 +1,4 @@
+com\mrl\classroster\dao\CourseDaoDBTest.class
+com\mrl\classroster\ClassrosterApplicationTests.class
+com\mrl\classroster\dao\StudentDaoDBTest.class
+com\mrl\classroster\dao\TeacherDaoDBTest.class
