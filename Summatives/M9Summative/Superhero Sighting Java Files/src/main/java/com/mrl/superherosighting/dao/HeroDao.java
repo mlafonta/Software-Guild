@@ -7,7 +7,7 @@ package com.mrl.superherosighting.dao;
 
 import com.mrl.superherosighting.dto.Hero;
 import com.mrl.superherosighting.dto.Location;
-import com.mrl.superherosighting.dto.Orginization;
+import com.mrl.superherosighting.dto.Organization;
 import java.util.List;
 
 /**
@@ -26,7 +26,7 @@ public interface HeroDao {
 
     void deleteHeroByHeroName(String heroName);
 
-    List<Hero> getHeroesForOrginization(Orginization orginization);
+    List<Hero> getHeroesForOrganization(Organization organization);
     
     List<Hero> getHeroesForLocation(Location location);
 }

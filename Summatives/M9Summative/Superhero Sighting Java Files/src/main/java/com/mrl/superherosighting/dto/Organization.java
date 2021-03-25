@@ -12,8 +12,8 @@ import java.util.Objects;
  *
  * @author flafo
  */
-public class Orginization {
-    private String orginizationName;
+public class Organization {
+    private String organizationName;
     private String description;
     private String address;
     private String city;
@@ -23,12 +23,12 @@ public class Orginization {
     private String email;
     private List<Hero> heroes;
 
-    public String getOrginizationName() {
-        return orginizationName;
+    public String getOrganizationName() {
+        return organizationName;
     }
 
-    public void setOriginizationName(String orginizationName) {
-        this.orginizationName = orginizationName;
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
     }
 
     public String getDescription() {
@@ -71,14 +71,6 @@ public class Orginization {
         this.zip = zip;
     }
 
-    public List<Hero> getHeroes() {
-        return heroes;
-    }
-
-    public void setHeroes(List<Hero> heroes) {
-        this.heroes = heroes;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -95,18 +87,26 @@ public class Orginization {
         this.email = email;
     }
 
+    public List<Hero> getHeroes() {
+        return heroes;
+    }
+
+    public void setHeroes(List<Hero> heroes) {
+        this.heroes = heroes;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.orginizationName);
-        hash = 83 * hash + Objects.hashCode(this.description);
-        hash = 83 * hash + Objects.hashCode(this.address);
-        hash = 83 * hash + Objects.hashCode(this.city);
-        hash = 83 * hash + Objects.hashCode(this.state);
-        hash = 83 * hash + Objects.hashCode(this.zip);
-        hash = 83 * hash + Objects.hashCode(this.phone);
-        hash = 83 * hash + Objects.hashCode(this.email);
-        hash = 83 * hash + Objects.hashCode(this.heroes);
+        hash = 29 * hash + Objects.hashCode(this.organizationName);
+        hash = 29 * hash + Objects.hashCode(this.description);
+        hash = 29 * hash + Objects.hashCode(this.address);
+        hash = 29 * hash + Objects.hashCode(this.city);
+        hash = 29 * hash + Objects.hashCode(this.state);
+        hash = 29 * hash + Objects.hashCode(this.zip);
+        hash = 29 * hash + Objects.hashCode(this.phone);
+        hash = 29 * hash + Objects.hashCode(this.email);
+        hash = 29 * hash + Objects.hashCode(this.heroes);
         return hash;
     }
 
@@ -121,8 +121,8 @@ public class Orginization {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Orginization other = (Orginization) obj;
-        if (!Objects.equals(this.orginizationName, other.orginizationName)) {
+        final Organization other = (Organization) obj;
+        if (!Objects.equals(this.organizationName, other.organizationName)) {
             return false;
         }
         if (!Objects.equals(this.description, other.description)) {
@@ -151,6 +151,6 @@ public class Orginization {
         }
         return true;
     }
-    
+
     
 }

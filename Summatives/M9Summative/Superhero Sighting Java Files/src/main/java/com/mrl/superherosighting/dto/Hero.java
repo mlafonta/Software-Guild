@@ -16,7 +16,7 @@ public class Hero {
     private String heroName;
     private String description;
     private List<Superpower> superpowers;
-    private List<Orginization> orginizations;
+    private List<Organization> organizations;
 
     public String getHeroName() {
         return heroName;
@@ -42,12 +42,12 @@ public class Hero {
         this.superpowers = superpowers;
     }
 
-    public List<Orginization> getOrginizations() {
-        return orginizations;
+    public List<Organization> getOrganizations() {
+        return organizations;
     }
 
-    public void setOrginizations(List<Orginization> orginizations) {
-        this.orginizations = orginizations;
+    public void setOrganizations(List<Organization> organizations) {
+        this.organizations = organizations;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Hero {
         hash = 71 * hash + Objects.hashCode(this.heroName);
         hash = 71 * hash + Objects.hashCode(this.description);
         hash = 71 * hash + Objects.hashCode(this.superpowers);
-        hash = 71 * hash + Objects.hashCode(this.orginizations);
+        hash = 71 * hash + Objects.hashCode(this.organizations);
         return hash;
     }
 
@@ -81,7 +81,7 @@ public class Hero {
         if (!Objects.equals(this.superpowers, other.superpowers)) {
             return false;
         }
-        if (!Objects.equals(this.orginizations, other.orginizations)) {
+        if (!Objects.equals(this.organizations, other.organizations)) {
             return false;
         }
         return true;

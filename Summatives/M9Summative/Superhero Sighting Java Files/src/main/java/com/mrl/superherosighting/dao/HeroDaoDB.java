@@ -5,11 +5,11 @@
  */
 package com.mrl.superherosighting.dao;
 
-import com.mrl.superherosighting.dao.OrginizationDaoDB.OrginizationMapper;
+import com.mrl.superherosighting.dao.OrganizationDaoDB.OrganizationMapper;
 import com.mrl.superherosighting.dao.SuperpowerDaoDB.SuperpowerMapper;
 import com.mrl.superherosighting.dto.Hero;
 import com.mrl.superherosighting.dto.Location;
-import com.mrl.superherosighting.dto.Orginization;
+import com.mrl.superherosighting.dto.Organization;
 import com.mrl.superherosighting.dto.Superpower;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,7 +36,7 @@ public class HeroDaoDB implements HeroDao {
         try {
             final String SELECT_HERO_BY_NAME = "SELECT * FROM Hero WHERE HeroName =? ";
             Hero hero = jdbc.queryForObject(SELECT_HERO_BY_NAME, new HeroMapper(), heroName);
-            hero.setOrginizations(getOrginizationsForHero(heroName));
+            hero.setOrganizations(getOrganizationsForHero(heroName));
             hero.setSuperpowers(getSuperpowersForHero(heroName));
             return hero;
         } catch (DataAccessException ex) {
@@ -48,7 +48,7 @@ public class HeroDaoDB implements HeroDao {
     public List<Hero> getAllHeroes() {
         final String SELECT_ALL_HEROES = "SELECT * FROM Hero";
         List<Hero> heroes = jdbc.query(SELECT_ALL_HEROES, new HeroMapper());
-        associateOrginizationsAndSuperpowers(heroes);
+        associateOrganizationsAndSuperpowers(heroes);
         return heroes;
     }
 
@@ -57,7 +57,7 @@ public class HeroDaoDB implements HeroDao {
     public Hero addHero(Hero hero) {
         final String INSERT_HERO = "INSERT INTO Hero(HeroName, Description) VALUES(?,?)";
         jdbc.update(INSERT_HERO, hero.getHeroName(), hero.getDescription());
-        insertHeroOrginization(hero);
+        insertHeroorganization(hero);
         insertHeroSuperpower(hero);
         return hero;
     }
@@ -67,9 +67,9 @@ public class HeroDaoDB implements HeroDao {
     public void updateHero(Hero hero) {
         final String UPDATE_HERO = "UPDATE Hero SET Description = ? WHERE HeroName = ?";
         jdbc.update(UPDATE_HERO, hero.getDescription(), hero.getHeroName());
-        final String DELETE_HERO_ORGINIZATION = "DELETE FROM Hero_Orginization WHERE HeroName = ?";
-        jdbc.update(DELETE_HERO_ORGINIZATION, hero.getHeroName());
-        insertHeroOrginization(hero);
+        final String DELETE_HERO_organIZATION = "DELETE FROM Hero_organization WHERE HeroName = ?";
+        jdbc.update(DELETE_HERO_organIZATION, hero.getHeroName());
+        insertHeroorganization(hero);
         final String DELETE_HERO_SUPERPOWER = "DELETE FROM Hero_Superpower WHERE HeroName = ?";
         jdbc.update(DELETE_HERO_SUPERPOWER, hero.getHeroName());
         insertHeroSuperpower(hero);
@@ -78,8 +78,8 @@ public class HeroDaoDB implements HeroDao {
     @Override
     @Transactional
     public void deleteHeroByHeroName(String heroName) {
-        final String DELETE_HERO_ORGINIZATION = "DELETE FROM Hero_Orginization WHERE HeroName = ?";
-        jdbc.update(DELETE_HERO_ORGINIZATION, heroName);
+        final String DELETE_HERO_ORGANIZATION = "DELETE FROM Hero_Organization WHERE HeroName = ?";
+        jdbc.update(DELETE_HERO_ORGANIZATION, heroName);
         final String DELETE_HERO_SUPERPOWER = "DELETE FROM Hero_Superpower WHERE HeroName = ?";
         jdbc.update(DELETE_HERO_SUPERPOWER, heroName);
         final String DELETE_SIGHTING = "DELETE FROM Sighting WHERE HeroName = ?";
@@ -89,10 +89,10 @@ public class HeroDaoDB implements HeroDao {
     }
 
     @Override
-    public List<Hero> getHeroesForOrginization(Orginization orginization) {
-        final String SELECT_HEROES_FOR_ORGINIZATION = "Select h.* FROM Hero h JOIN Hero_Orginization ho ON ho.HeroName = h.HeroName WHERE ho.OrginizationName = ?";
-        List<Hero> heroes = jdbc.query(SELECT_HEROES_FOR_ORGINIZATION, new HeroMapper(), orginization.getOrginizationName());
-        associateOrginizationsAndSuperpowers(heroes);
+    public List<Hero> getHeroesForOrganization(Organization organization) {
+        final String SELECT_HEROES_FOR_ORGANIZATION = "Select h.* FROM Hero h JOIN Hero_Organization ho ON ho.HeroName = h.HeroName WHERE ho.OrganizationName = ?";
+        List<Hero> heroes = jdbc.query(SELECT_HEROES_FOR_ORGANIZATION, new HeroMapper(), organization.getOrganizationName());
+        associateOrganizationsAndSuperpowers(heroes);
         return heroes;
     }
 
@@ -100,13 +100,13 @@ public class HeroDaoDB implements HeroDao {
     public List<Hero> getHeroesForLocation(Location location) {
         final String SELECT_HEROES_FOR_LOCATION = "SELECT h.* FROM Hero h JOIN Sighting s ON s.HeroName = h.HeroName WHERE s.LocationName = ?";
         List<Hero> heroes = jdbc.query(SELECT_HEROES_FOR_LOCATION, new HeroMapper(), location.getLocationName());
-        associateOrginizationsAndSuperpowers(heroes);
+        associateOrganizationsAndSuperpowers(heroes);
         return heroes;
     }
 
-    private List<Orginization> getOrginizationsForHero(String heroName) {
-        final String SELECT_ORGINIZATIONS_FOR_HERO = "SELECT o.* FROM Orginization o JOIN Hero_Orginization ho ON o.OrginizationName = ho.orginizationName WHERE ho.HeroName = ?";
-        return jdbc.query(SELECT_ORGINIZATIONS_FOR_HERO, new OrginizationMapper(), heroName);
+    private List<Organization> getOrganizationsForHero(String heroName) {
+        final String SELECT_organIZATIONS_FOR_HERO = "SELECT o.* FROM organization o JOIN Hero_organization ho ON o.organizationName = ho.organizationName WHERE ho.HeroName = ?";
+        return jdbc.query(SELECT_organIZATIONS_FOR_HERO, new OrganizationMapper(), heroName);
     }
 
     private List<Superpower> getSuperpowersForHero(String heroName) {
@@ -114,18 +114,20 @@ public class HeroDaoDB implements HeroDao {
         return jdbc.query(SELECT_SUPERPOWERS_FOR_HERO, new SuperpowerMapper(), heroName);
     }
 
-    private void associateOrginizationsAndSuperpowers(List<Hero> heroes) {
+    private void associateOrganizationsAndSuperpowers(List<Hero> heroes) {
         for (Hero hero : heroes) {
-            hero.setOrginizations(getOrginizationsForHero(hero.getHeroName()));
+            hero.setOrganizations(getOrganizationsForHero(hero.getHeroName()));
             hero.setSuperpowers(getSuperpowersForHero(hero.getHeroName()));
 
         }
     }
 
-    private void insertHeroOrginization(Hero hero) {
-        final String INSERT_HERO_ORGINIZATION = "INSERT INTO Hero_Orginization(HeroName, OrginizationName) VALUES(?,?)";
-        for (Orginization orginization : hero.getOrginizations()) {
-            jdbc.update(INSERT_HERO_ORGINIZATION, hero.getHeroName(), orginization.getOrginizationName());
+    private void insertHeroorganization(Hero hero) {
+        if (hero.getOrganizations() != null) {
+            final String INSERT_HERO_organIZATION = "INSERT INTO Hero_organization(HeroName, organizationName) VALUES(?,?)";
+            for (Organization organization : hero.getOrganizations()) {
+                jdbc.update(INSERT_HERO_organIZATION, hero.getHeroName(), organization.getOrganizationName());
+            }
         }
     }
 

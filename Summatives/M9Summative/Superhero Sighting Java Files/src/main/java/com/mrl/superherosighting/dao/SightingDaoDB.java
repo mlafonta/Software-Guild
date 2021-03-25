@@ -9,7 +9,9 @@ import com.mrl.superherosighting.dao.HeroDaoDB.HeroMapper;
 import com.mrl.superherosighting.dao.LocationDaoDB.LocationMapper;
 import com.mrl.superherosighting.dto.Hero;
 import com.mrl.superherosighting.dto.Location;
+import com.mrl.superherosighting.dto.Organization;
 import com.mrl.superherosighting.dto.Sighting;
+import com.mrl.superherosighting.dto.Superpower;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,7 +41,7 @@ public class SightingDaoDB implements SightingDao {
             sighting.setHero(getHeroForSighting(sightingId));
             sighting.setLocation(getLocationForSighting(sightingId));
             return sighting;
-        } catch(DataAccessException ex) {
+        } catch (DataAccessException ex) {
             return null;
         }
     }
@@ -65,7 +67,7 @@ public class SightingDaoDB implements SightingDao {
     @Override
     public void updateSighting(Sighting sighting) {
         final String UPDATE_SIGHTING = "UPDATE Sighting SET Date = ?, HeroName = ?, LocationName = ? WHERE SightingId = ?";
-        jdbc.update(UPDATE_SIGHTING, Date.valueOf(sighting.getDate()), sighting.getHero().getHeroName(), sighting.getLocation().getLocationName(), sighting.getSightingId());        
+        jdbc.update(UPDATE_SIGHTING, Date.valueOf(sighting.getDate()), sighting.getHero().getHeroName(), sighting.getLocation().getLocationName(), sighting.getSightingId());
     }
 
     @Override
@@ -92,7 +94,14 @@ public class SightingDaoDB implements SightingDao {
 
     private Hero getHeroForSighting(int sightingId) {
         final String SELECT_HERO_FOR_SIGHTING = "SELECT h.* FROM Hero h JOIN Sighting s ON h.HeroName = s.HeroName WHERE s.SightingId = ?";
-        return jdbc.queryForObject(SELECT_HERO_FOR_SIGHTING, new HeroMapper(), sightingId);
+        Hero hero = jdbc.queryForObject(SELECT_HERO_FOR_SIGHTING, new HeroMapper(), sightingId);
+        final String SELECT_SUPERPOWERS_FOR_HERO = "SELECT s.* FROM Superpower s JOIN Hero_Superpower hs ON s.SuperpowerName = hs.SuperpowerName WHERE hs.HeroName = ?";
+        List<Superpower> superpowers = jdbc.query(SELECT_SUPERPOWERS_FOR_HERO, new SuperpowerDaoDB.SuperpowerMapper(), hero.getHeroName());
+        hero.setSuperpowers(superpowers);
+        final String SELECT_organIZATIONS_FOR_HERO = "SELECT o.* FROM organization o JOIN Hero_organization ho ON o.organizationName = ho.organizationName WHERE ho.HeroName = ?";
+        List<Organization> organizations = jdbc.query(SELECT_organIZATIONS_FOR_HERO, new OrganizationDaoDB.OrganizationMapper(), hero.getHeroName());
+        hero.setOrganizations(organizations);
+        return hero;
     }
 
     private Location getLocationForSighting(int sightingId) {
@@ -101,7 +110,7 @@ public class SightingDaoDB implements SightingDao {
     }
 
     private void associateHeroAndLocation(List<Sighting> sightings) {
-        for(Sighting sighting : sightings) {
+        for (Sighting sighting : sightings) {
             sighting.setHero(getHeroForSighting(sighting.getSightingId()));
             sighting.setLocation(getLocationForSighting(sighting.getSightingId()));
         }

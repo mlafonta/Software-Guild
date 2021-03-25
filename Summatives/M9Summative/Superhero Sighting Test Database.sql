@@ -24,8 +24,8 @@ CREATE TABLE Superpower (
     Description VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Orginization (
-	OrginizationName VARCHAR(100) PRIMARY KEY,
+CREATE TABLE Organization (
+	OrganizationName VARCHAR(100) PRIMARY KEY,
     Description VARCHAR(255) NOT NULL,
     Address VARCHAR(100) NOT NULL,
     City VARCHAR(45) NOT NULL,
@@ -52,12 +52,12 @@ CREATE TABLE Hero_Superpower (
     FOREIGN KEY (SuperpowerName) REFERENCES Superpower(SuperpowerName)
 );
 
-CREATE TABLE Hero_Orginization (
+CREATE TABLE Hero_Organization (
 	HeroName VARCHAR(50),
-    OrginizationName VARCHAR(100),
-    PRIMARY KEY pk_Hero_Orginization(HeroName, OrginizationName),
+    OrganizationName VARCHAR(100),
+    PRIMARY KEY pk_Hero_Organization(HeroName, OrganizationName),
     FOREIGN KEY (HeroName) REFERENCES Hero(HeroName),
-    FOREIGN KEY (OrginizationName) REFERENCES Orginization(OrginizationName)
+    FOREIGN KEY (OrganizationName) REFERENCES Organization(OrganizationName)
 );    
     
     

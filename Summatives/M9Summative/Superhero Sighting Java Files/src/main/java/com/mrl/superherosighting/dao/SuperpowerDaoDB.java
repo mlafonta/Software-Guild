@@ -61,7 +61,7 @@ public class SuperpowerDaoDB implements SuperpowerDao {
         final String DELETE_HERO_SUPERPOWER = "DELETE FROM Hero_Superpower WHERE SuperpowerName = ?";
         jdbc.update(DELETE_HERO_SUPERPOWER, superpowerName);
         
-        final String DELETE_SUPERPOWER = "DELETE FROM Superpower WHERE SuperpowerName - ?";
+        final String DELETE_SUPERPOWER = "DELETE FROM Superpower WHERE SuperpowerName = ?";
         jdbc.update(DELETE_SUPERPOWER, superpowerName);
     }
     
