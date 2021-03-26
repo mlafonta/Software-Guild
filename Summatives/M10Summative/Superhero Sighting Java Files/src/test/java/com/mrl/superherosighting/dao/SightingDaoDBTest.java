@@ -469,5 +469,76 @@ public class SightingDaoDBTest {
         assertFalse(sightings.contains(sighting2));
         assertTrue(sightings.contains(sighting3));
     }
+    
+    @Test
+    public void testGetSightingsForDate() {
+        Superpower superpower = new Superpower();
+        superpower.setSuperpowerName("Superpower name");
+        superpower.setDescription("Superpower description");
+        superpower = superpowerDao.addSuperpower(superpower);
+
+        List<Superpower> superpowers = new ArrayList<>();
+        superpowers.add(superpower);
+
+        Organization organization = new Organization();
+        organization.setOrganizationName("Organzation name");
+        organization.setDescription("Organization Description");
+        organization.setAddress("Organization Address");
+        organization.setCity("Organzation City");
+        organization.setState("OS");
+        organization.setZip("OZip");
+        organization.setPhone("Org Phone");
+        organization.setEmail("Organization email");
+        organization = organizationDao.addOrganization(organization);
+
+        List<Organization> organizations = new ArrayList<>();
+        organizations.add(organization);
+
+        Hero hero = new Hero();
+        hero.setHeroName("Hero Name");
+        hero.setDescription("Hero Description");
+        hero.setOrganizations(organizations);
+        hero.setSuperpowers(superpowers);
+        hero = heroDao.addHero(hero);
+
+        Location location = new Location();
+        location.setLocationName("Location Name");
+        location.setDescription("Location Description");
+        location.setAddress("Location Address");
+        location.setCity("Location City");
+        location.setState("LS");
+        location.setZip("LZip");
+        location.setLatitude("L Lat");
+        location.setLongitude("L Lon");
+        location = locationDao.addLocation(location);
+
+
+        Sighting sighting = new Sighting();
+        sighting.setDate(LocalDate.of(1990, Month.MARCH, 2));
+        sighting.setHero(hero);
+        sighting.setLocation(location);
+        sighting = sightingDao.addSighting(sighting);
+
+        Sighting sighting2 = new Sighting();
+        sighting2.setDate(LocalDate.of(1992, Month.MAY, 8));
+        sighting2.setHero(hero);
+        sighting2.setLocation(location);
+        sighting2 = sightingDao.addSighting(sighting2);
+
+        Sighting sighting3 = new Sighting();
+        sighting3.setDate(LocalDate.of(1990, Month.MARCH, 2));
+        sighting3.setHero(hero);
+        sighting3.setLocation(location);
+        sighting3 = sightingDao.addSighting(sighting3);
+        
+        LocalDate date;
+        date = LocalDate.of(1990, Month.MARCH, 2);
+        
+        List<Sighting> sightings = sightingDao.getSightingsForDate(date);
+        assertEquals(2, sightings.size());
+        assertTrue(sightings.contains(sighting));
+        assertFalse(sightings.contains(sighting2));
+        assertTrue(sightings.contains(sighting3));        
+    }
 
 }

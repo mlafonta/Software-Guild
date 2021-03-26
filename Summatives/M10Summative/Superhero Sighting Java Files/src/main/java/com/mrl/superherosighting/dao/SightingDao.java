@@ -8,6 +8,7 @@ package com.mrl.superherosighting.dao;
 import com.mrl.superherosighting.dto.Hero;
 import com.mrl.superherosighting.dto.Location;
 import com.mrl.superherosighting.dto.Sighting;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -29,4 +30,6 @@ public interface SightingDao {
     List<Sighting> getSightingsForHero(Hero hero);
 
     List<Sighting> getSightingsForLocation(Location location);
+    
+    List<Sighting> getSightingsForDate(LocalDate date);
 }
