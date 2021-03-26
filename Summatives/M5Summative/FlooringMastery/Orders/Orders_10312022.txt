@@ -1,0 +1,4 @@
+OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
+8::Maxwell, Inc.::Texas::4.45::Carpet::10000::2.25::2.10::22500.00::21000.00::1935.75::45435.75
+9::Acme, Inc.::Kentucky::6.00::Wood::200::5.15::4.75::1030.00::950.00::118.80::2098.80
+10::Maxwell Inc::Texas::4.45::Wood::200::5.15::4.75::1030.00::950.00::88.11::2068.11

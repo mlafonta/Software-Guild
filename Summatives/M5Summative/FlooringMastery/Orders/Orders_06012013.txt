@@ -1,0 +1,2 @@
+OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
+1::Ada Lovelace::California::25.00::Laminate::249.00::1.75::2.10::435.75::522.90::239.66::1198.31
