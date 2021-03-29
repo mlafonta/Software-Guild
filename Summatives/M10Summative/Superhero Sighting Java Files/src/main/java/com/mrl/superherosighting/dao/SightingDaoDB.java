@@ -59,7 +59,7 @@ public class SightingDaoDB implements SightingDao {
     @Transactional
     public Sighting addSighting(Sighting sighting) {
         final String INSERT_SIGHTING = "INSERT INTO Sighting(Date, HeroName, LocationName) VALUES(?,?,?)";
-        jdbc.update(INSERT_SIGHTING, Date.valueOf(sighting.getDate()), sighting.getHero().getHeroName(), sighting.getLocation().getLocationName());
+        jdbc.update(INSERT_SIGHTING, sighting.getDate(), sighting.getHero().getHeroName(), sighting.getLocation().getLocationName());
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         sighting.setSightingId(newId);
         return sighting;
