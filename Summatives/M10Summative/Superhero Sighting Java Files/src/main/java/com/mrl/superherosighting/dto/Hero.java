@@ -7,16 +7,23 @@ package com.mrl.superherosighting.dto;
 
 import java.util.List;
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
  * @author flafo
  */
 public class Hero {
+    @NotNull(message = "Name required")
+    @NotBlank(message = "Name required")
+    @Size(max = 50, message = "Name must be less than 50 characters")
     private String heroName;
+    @NotBlank(message = "Description required")
+    @Size(max = 255, message = "Description must be less than 255 characters")
     private String description;
     private List<Superpower> superpowers;
-    private List<Organization> organizations;
 
     public String getHeroName() {
         return heroName;
@@ -42,21 +49,12 @@ public class Hero {
         this.superpowers = superpowers;
     }
 
-    public List<Organization> getOrganizations() {
-        return organizations;
-    }
-
-    public void setOrganizations(List<Organization> organizations) {
-        this.organizations = organizations;
-    }
-
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 71 * hash + Objects.hashCode(this.heroName);
-        hash = 71 * hash + Objects.hashCode(this.description);
-        hash = 71 * hash + Objects.hashCode(this.superpowers);
-        hash = 71 * hash + Objects.hashCode(this.organizations);
+        hash = 89 * hash + Objects.hashCode(this.heroName);
+        hash = 89 * hash + Objects.hashCode(this.description);
+        hash = 89 * hash + Objects.hashCode(this.superpowers);
         return hash;
     }
 
@@ -81,10 +79,9 @@ public class Hero {
         if (!Objects.equals(this.superpowers, other.superpowers)) {
             return false;
         }
-        if (!Objects.equals(this.organizations, other.organizations)) {
-            return false;
-        }
         return true;
     }
+
+
     
 }

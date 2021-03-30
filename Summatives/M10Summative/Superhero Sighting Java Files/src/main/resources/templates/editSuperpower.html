@@ -15,7 +15,7 @@
         <div class="container">
             <div class="row m-4">
                 <div class="col text-center border border-dark">
-                    <h1><a href="index" style="color: black; text-decoration: none;">The HERO Tracker</a></h1>
+                    <h1><a href="/" style="color: black; text-decoration: none;">The HERO Tracker</a></h1>
                 </div>
             </div>
             <div class="row m-4">
@@ -48,7 +48,11 @@
                                 <label for="description">Description:</label>
                             </div>
                             <div class="col-8 text-left">
-                                <textarea name="description" id="description" class="form-control m-2" rows="4" style="resize: none;" th:text="${superpower.description}">description text</textarea> 
+                                <textarea name="description" id="description" class="form-control" rows="4" style="resize: none;" th:text="${superpower.description}">description text</textarea> 
+                                <div th:if="${#fields.hasErrors('superpower.description')}">
+                                    <p th:each="error : ${#fields.errors('superpower.description')}" class="alert alert-danger"
+                                       th:text="${error}"> </p>
+                                </div>
                             </div>
                         </div>
                         <div class="text-center m-4">

@@ -15,7 +15,7 @@
         <div class="container">
             <div class="row m-4">
                 <div class="col text-center border border-dark">
-                    <h1><a href="index" style="color: black; text-decoration: none;">The HERO Tracker</a></h1>
+                    <h1><a href="/" style="color: black; text-decoration: none;">The HERO Tracker</a></h1>
                 </div>
             </div>
             <div class="row m-4">
@@ -45,20 +45,24 @@
                                 <td th:text="${hero.heroName}">Hero Name</td>
                                 <td><a href="#" th:href="@{/heroDetail(heroName=${hero.heroName})}">Details</a></td>
                                 <td><a href="#" th:href="@{/editHero(heroName=${hero.heroName})}">Edit</a></td>
-                                <td><a href="#" th:href="@{/deleteHero(heroName=${hero.heroName})}">Delete</a></td>
+                                <td><a href="#" th:href="@{/deleteHeroConfirm(heroName=${hero.heroName})}">Delete</a></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="col-md-5 m-2">
                     <h2 class="mt-3">Add Hero</h2>
-                    <form action="addHero" method="POST" id="addHero">
+                    <form action="addHero" method="POST" id="addHero" th:object"${hero}">
                         <div class="form-group row">
                             <label for="heroName" class="col-3 col-form-label ml-2 text-right">
                                 Name:
                             </label>
                             <div class="col-8 align-left">
-                                <input type="text" name="heroName" id="heroName" class="form-control m-2" />
+                                <input type="text" name="heroName" id="heroName" class="form-control"/>
+                                <div th:if="${#fields.hasErrors('hero.heroName')}">
+                                    <p th:each="error : ${#fields.errors('hero.heroName')}" class="alert alert-danger"
+                                       th:text="${error}"> Bad name </p>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -66,21 +70,12 @@
                                 Description:
                             </label>
                             <div class="col-8 align-left">
-                                <textarea form="addHero" name="description" id="description" class="form-control m-2" rows="4" style="resize: none;"></textarea>
+                                <textarea form="addHero" name="description" id="description" class="form-control" rows="4" style="resize: none;"></textarea>
+                                <div th:if="${#fields.hasErrors('hero.description')}">
+                                    <p th:each="error : ${#fields.errors('hero.description')}" class="alert alert-danger"
+                                       th:text="${error}"> Bad description </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="organizations" class="col-3 col-form-label ml-2 text-right">
-                                Organizations:
-                            </label>
-                            <div class="col-8 align-left">
-                                <th:block th:each="organization : ${organizations}">
-                                    <div>
-                                        <input type="checkbox" name="organizationName" th:value="${organization.organizationName}" />
-                                        <label th:text="${organization.organizationName}"></label>
-                                    </div>
-                                </th:block>
-                            </div>                            
                         </div>
                         <div class="form-group row">
                             <label for="superpowers" class="col-3 col-form-label ml-2 text-right">
@@ -90,9 +85,13 @@
                                 <th:block th:each="superpower : ${superpowers}">
                                     <div>
                                         <input type="checkbox" name="superpowerName" th:value="${superpower.superpowerName}" />
-                                        <label th:text="${superpower.superpowerName}"></label>
+                                        <label th:text="${superpower.superpowerName}"></label>                                        
                                     </div>
                                 </th:block>
+                                <div th:if="${#fields.hasErrors('hero.superpowers')}">
+                                    <p th:each="error : ${#fields.errors('hero.superpowers')}" class="alert alert-danger"
+                                       th:text="${error}"> Missing powers </p>
+                                </div>
                             </div>                            
                         </div>
                         <div class="d-flex justify-content-center m-4">

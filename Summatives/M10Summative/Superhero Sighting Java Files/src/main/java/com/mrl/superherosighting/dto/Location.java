@@ -6,19 +6,37 @@
 package com.mrl.superherosighting.dto;
 
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
  * @author flafo
  */
 public class Location {
+
+    @NotBlank(message = "Name required")
+    @Size(max = 50, message = "Name must be less than 50 characters")
     private String locationName;
+    @NotBlank(message = "Description required")
+    @Size(max = 255, message = "Description must be less than 255 characters")
     private String description;
+    @NotBlank(message = "Address required")
+    @Size(max = 50, message = "Address must be less than 100 characters")
     private String address;
+    @NotBlank(message = "City required")
+    @Size(max = 50, message = "City must be less than 45 characters")
     private String city;
+    @NotBlank(message = "State required")
     private String state;
+    @Pattern(regexp = "\\d{5}", message = "Five digit Zip required")
     private String zip;
+    @NotBlank(message = "Latitude required")
+    @Pattern(regexp = "\\+|-?\\d*\\.?\\d*", message = "Valid latitude required (decimal notation)")
     private String latitude;
+    @NotBlank(message = "Longitude required")
+    @Pattern(regexp = "\\+|-?\\d*\\.?\\d*", message = "Valid longitude required (decimal notation)")
     private String longitude;
 
     public String getLocationName() {
@@ -138,6 +156,4 @@ public class Location {
         return true;
     }
 
-
-    
 }

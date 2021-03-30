@@ -14,6 +14,9 @@ import com.mrl.superherosighting.dto.Superpower;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,7 +39,6 @@ public class HeroDaoDB implements HeroDao {
         try {
             final String SELECT_HERO_BY_NAME = "SELECT * FROM Hero WHERE HeroName =? ";
             Hero hero = jdbc.queryForObject(SELECT_HERO_BY_NAME, new HeroMapper(), heroName);
-            hero.setOrganizations(getOrganizationsForHero(heroName));
             hero.setSuperpowers(getSuperpowersForHero(heroName));
             return hero;
         } catch (DataAccessException ex) {
@@ -48,7 +50,7 @@ public class HeroDaoDB implements HeroDao {
     public List<Hero> getAllHeroes() {
         final String SELECT_ALL_HEROES = "SELECT * FROM Hero";
         List<Hero> heroes = jdbc.query(SELECT_ALL_HEROES, new HeroMapper());
-        associateOrganizationsAndSuperpowers(heroes);
+        associateSuperpowers(heroes);
         return heroes;
     }
 
@@ -57,7 +59,6 @@ public class HeroDaoDB implements HeroDao {
     public Hero addHero(Hero hero) {
         final String INSERT_HERO = "INSERT INTO Hero(HeroName, Description) VALUES(?,?)";
         jdbc.update(INSERT_HERO, hero.getHeroName(), hero.getDescription());
-        insertHeroorganization(hero);
         insertHeroSuperpower(hero);
         return hero;
     }
@@ -67,9 +68,6 @@ public class HeroDaoDB implements HeroDao {
     public void updateHero(Hero hero) {
         final String UPDATE_HERO = "UPDATE Hero SET Description = ? WHERE HeroName = ?";
         jdbc.update(UPDATE_HERO, hero.getDescription(), hero.getHeroName());
-        final String DELETE_HERO_organIZATION = "DELETE FROM Hero_organization WHERE HeroName = ?";
-        jdbc.update(DELETE_HERO_organIZATION, hero.getHeroName());
-        insertHeroorganization(hero);
         final String DELETE_HERO_SUPERPOWER = "DELETE FROM Hero_Superpower WHERE HeroName = ?";
         jdbc.update(DELETE_HERO_SUPERPOWER, hero.getHeroName());
         insertHeroSuperpower(hero);
@@ -92,7 +90,7 @@ public class HeroDaoDB implements HeroDao {
     public List<Hero> getHeroesForOrganization(Organization organization) {
         final String SELECT_HEROES_FOR_ORGANIZATION = "Select h.* FROM Hero h JOIN Hero_Organization ho ON ho.HeroName = h.HeroName WHERE ho.OrganizationName = ?";
         List<Hero> heroes = jdbc.query(SELECT_HEROES_FOR_ORGANIZATION, new HeroMapper(), organization.getOrganizationName());
-        associateOrganizationsAndSuperpowers(heroes);
+        associateSuperpowers(heroes);
         return heroes;
     }
 
@@ -100,13 +98,10 @@ public class HeroDaoDB implements HeroDao {
     public List<Hero> getHeroesForLocation(Location location) {
         final String SELECT_HEROES_FOR_LOCATION = "SELECT h.* FROM Hero h JOIN Sighting s ON s.HeroName = h.HeroName WHERE s.LocationName = ?";
         List<Hero> heroes = jdbc.query(SELECT_HEROES_FOR_LOCATION, new HeroMapper(), location.getLocationName());
-        associateOrganizationsAndSuperpowers(heroes);
-        return heroes;
-    }
-
-    private List<Organization> getOrganizationsForHero(String heroName) {
-        final String SELECT_organIZATIONS_FOR_HERO = "SELECT o.* FROM organization o JOIN Hero_organization ho ON o.organizationName = ho.organizationName WHERE ho.HeroName = ?";
-        return jdbc.query(SELECT_organIZATIONS_FOR_HERO, new OrganizationMapper(), heroName);
+        associateSuperpowers(heroes);
+        return heroes.stream()
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     private List<Superpower> getSuperpowersForHero(String heroName) {
@@ -114,20 +109,10 @@ public class HeroDaoDB implements HeroDao {
         return jdbc.query(SELECT_SUPERPOWERS_FOR_HERO, new SuperpowerMapper(), heroName);
     }
 
-    private void associateOrganizationsAndSuperpowers(List<Hero> heroes) {
+    private void associateSuperpowers(List<Hero> heroes) {
         for (Hero hero : heroes) {
-            hero.setOrganizations(getOrganizationsForHero(hero.getHeroName()));
             hero.setSuperpowers(getSuperpowersForHero(hero.getHeroName()));
 
-        }
-    }
-
-    private void insertHeroorganization(Hero hero) {
-        if (hero.getOrganizations() != null) {
-            final String INSERT_HERO_organIZATION = "INSERT INTO Hero_organization(HeroName, organizationName) VALUES(?,?)";
-            for (Organization organization : hero.getOrganizations()) {
-                jdbc.update(INSERT_HERO_organIZATION, hero.getHeroName(), organization.getOrganizationName());
-            }
         }
     }
 

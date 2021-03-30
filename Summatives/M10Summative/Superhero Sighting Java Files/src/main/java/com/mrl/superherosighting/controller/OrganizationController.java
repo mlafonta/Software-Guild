@@ -15,9 +15,12 @@ import com.mrl.superherosighting.dto.Organization;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -47,23 +50,46 @@ public class OrganizationController {
     public String displayOrganizations(Model model) {
         List<Organization> organizations = organizationDao.getAllOrganizations();
         List<Hero> heroes = heroDao.getAllHeroes();
+        Organization organization = new Organization();
         model.addAttribute("organizations", organizations);
         model.addAttribute("heroes", heroes);
+        model.addAttribute("organization", organization);
         return "organization";
     }
 
     @PostMapping("addOrganization")
-    public String addOrganization(Organization organization, HttpServletRequest request) {
+    public String addOrganization(@Valid Organization organization, BindingResult result, HttpServletRequest request, Model model) {
         String[] heroNames = request.getParameterValues("heroName");
         List<Hero> heroes = new ArrayList<>();
-        for (String heroName : heroNames) {
-            heroes.add(heroDao.getHeroByHeroName(heroName));
+        if (heroNames != null) {
+            for (String heroName : heroNames) {
+                heroes.add(heroDao.getHeroByHeroName(heroName));
+            }
+            organization.setHeroes(heroes);
+        } else {
+            FieldError error = new FieldError("organization", "heroes", "Must include at least one hero");
+            result.addError(error);            
         }
-        organization.setHeroes(heroes);
+        if (result.hasErrors()) {
+            List<Organization> organizations = organizationDao.getAllOrganizations();
+            List<Hero> heroes2 = heroDao.getAllHeroes();
+            model.addAttribute("organizations", organizations);
+            model.addAttribute("heroes", heroes2);
+            model.addAttribute("organization", organization);
+            return "organization";
+        }
         organizationDao.addOrganization(organization);
         return "redirect:/organization";
     }
 
+    @GetMapping("deleteOrganizationConfirm")
+    public String deleteOrganizationConfirm(String organizationName, Model model) {
+        List<Hero> heroes = heroDao.getAllHeroes();
+        model.addAttribute("heroes", heroes);
+        model.addAttribute("organizationName", organizationName);
+        return "deleteOrganizationConfirm";
+    }
+    
     @GetMapping("deleteOrganization")
     public String deleteOrganization(String organizationName) {
         organizationDao.deleteOrganizationByOrganzationName(organizationName);
@@ -74,6 +100,7 @@ public class OrganizationController {
     public String organizationDetail(String organizationName, Model model) {
         Organization organization = organizationDao.getOrganizationByOrganizationName(organizationName);
         model.addAttribute("organization", organization);
+        model.addAttribute("organizationName", organizationName);
         return "organizationDetail";
     }
 
@@ -87,14 +114,31 @@ public class OrganizationController {
     }
 
     @PostMapping("editOrganization")
-    public String performEditOrganization(Organization organization, HttpServletRequest request) {
+    public String performEditOrganization(@Valid Organization organization, BindingResult result, HttpServletRequest request, Model model) {
         String[] heroNames = request.getParameterValues("heroName");
         List<Hero> heroes = new ArrayList<>();
-        for (String heroName : heroNames) {
-            heroes.add(heroDao.getHeroByHeroName(heroName));
+        if (heroNames != null) {
+            for (String heroName : heroNames) {
+                heroes.add(heroDao.getHeroByHeroName(heroName));
+            }
+            organization.setHeroes(heroes);
+        } else {
+            FieldError error = new FieldError("organization", "heroes", "Must include at least one hero");
+            result.addError(error);            
         }
-        organization.setHeroes(heroes);
+        if (result.hasErrors()) {
+            List<Organization> organizations = organizationDao.getAllOrganizations();
+            List<Hero> heroes2 = heroDao.getAllHeroes();
+            List<Hero> heroes3 = heroDao.getHeroesForOrganization(organization);
+            organization.setHeroes(heroes3);
+            model.addAttribute("organizations", organizations);
+            model.addAttribute("heroes", heroes2);
+            model.addAttribute("organization", organization);
+            return "editOrganization";
+        }
         organizationDao.updateOrganization(organization);
-        return "redirect:/organization";
+        String organizationName = organization.getOrganizationName();
+        model.addAttribute("organizationName", organizationName);
+        return "organizationDetail";
     }
 }

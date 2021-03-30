@@ -31,24 +31,22 @@
             </div>
             <div class="row m-4">
                 <div class="col-md-6 ml-2 mr-3 mt-2 mb-2">
-                    <table class="table table-striped mt-3">
-                        <thead>
-                            <tr>
-                                <th width="25%">Superpower</th>
-                                <th width="45%">Description</th>
-                                <th width="15%">Edit</th>
-                                <th width="15%">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="superpower : ${superpowers}">
-                                <td th:text="${superpower.superpowerName}">Superpower Name</td>
-                                <td th:text="${superpower.description}">Description</td>
-                                <td><a href="#" th:href="@{/editSuperpower(superpowerName=${superpower.superpowerName})}">Edit</a></td>
-                                <td><a href="#" th:href="@{/deleteSuperpowerConfirm(superpowerName=${superpower.superpowerName})}">Delete</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <h5 class="text-center mb-3">
+                        Confirm Deletion of <span th:text="${superpowerName}"></span>
+                    </h5> 
+                    <div class="row">
+                        <div class="col-md-6 text-right">
+                            <form action="deleteSuperpower" method="GET">
+                                <input type="hidden" name="superpowerName" th:value="${superpowerName}" />
+                                <button type="submit" class="btn btn-primary">Confirm</button>
+                            </form>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <form action="superpower" method="GET">
+                                <button type="submit" class="btn btn-primary">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-5 m-2">
                     <h2 class="mt-3">Add Superpower</h2>
@@ -59,10 +57,6 @@
                             </label>
                             <div class="col-8 align-left">
                                 <input type="text" name="superpowerName" id="superpowerName" class="form-control" />
-                                <div th:if="${#fields.hasErrors('superpower.superpowerName')}">
-                                    <p th:each="error : ${#fields.errors('superpower.superpowerName')}" class="alert alert-danger"
-                                       th:text="${error}"></p>
-                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -71,10 +65,6 @@
                             </label>
                             <div class="col-8 align-left">
                                 <textarea form="addSuperpower" name="description" id="description" class="form-control" rows="4" style="resize: none;"></textarea>
-                                <div th:if="${#fields.hasErrors('superpower.description')}">
-                                    <p th:each="error : ${#fields.errors('superpower.description')}" class="alert alert-danger"
-                                       th:text="${error}"></p>
-                                </div>
                             </div>
                         </div>
                         <div class="d-flex justify-content-center m-4">

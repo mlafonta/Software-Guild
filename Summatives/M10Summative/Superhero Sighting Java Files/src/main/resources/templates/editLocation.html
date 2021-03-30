@@ -15,7 +15,7 @@
         <div class="container">
             <div class="row m-4">
                 <div class="col text-center border border-dark">
-                    <h1><a href="index" style="color: black; text-decoration: none;">The HERO Tracker</a></h1>
+                    <h1><a href="/" style="color: black; text-decoration: none;">The HERO Tracker</a></h1>
                 </div>
             </div>
             <div class="row m-4">
@@ -48,7 +48,11 @@
                                 <label for="description">Description:</label>
                             </div>
                             <div class="col-8 text-left">
-                                <textarea name="description" id="description" class="form-control m-2" rows="4" style="resize: none;" th:text="${location.description}">description text</textarea> 
+                                <textarea name="description" id="description" class="form-control" rows="4" style="resize: none;" th:text="${location.description}">description text</textarea> 
+                                <div th:if="${#fields.hasErrors('location.description')}">
+                                    <p th:each="error : ${#fields.errors('location.description')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -57,6 +61,10 @@
                             </div>
                             <div class="col-8 text-left">
                                 <input type="text" name="address" id="address" class="form-control" th:value="${location.address}"/>
+                                <div th:if="${#fields.hasErrors('location.address')}">
+                                    <p th:each="error : ${#fields.errors('location.address')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -65,67 +73,74 @@
                             </div>
                             <div class="col-8 text-left">
                                 <input type="text" name="city" id="city" class="form-control" th:value="${location.city}"/>
+                                <div th:if="${#fields.hasErrors('location.city')}">
+                                    <p th:each="error : ${#fields.errors('location.city')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-4 col-form-label text-right">
                                 <label for="state">State:</label>
                             </div>
-                            <div class="col-4 text-left">
+                            <div class="col-5 text-left">
                                 <select id="state" name="state" class="form-control" th:selected="${location.state}">
                                     <option value=""></option>
-                                    <option value="AL">AL</option>
-                                    <option value="AK">AK</option>
-                                    <option value="AR">AR</option>	
-                                    <option value="AZ">AZ</option>
-                                    <option value="CA">CA</option>
-                                    <option value="CO">CO</option>
-                                    <option value="CT">CT</option>
-                                    <option value="DC">DC</option>
-                                    <option value="DE">DE</option>
-                                    <option value="FL">FL</option>
-                                    <option value="GA">GA</option>
-                                    <option value="HI">HI</option>
-                                    <option value="IA">IA</option>	
-                                    <option value="ID">ID</option>
-                                    <option value="IL">IL</option>
-                                    <option value="IN">IN</option>
-                                    <option value="KS">KS</option>
-                                    <option value="KY">KY</option>
-                                    <option value="LA">LA</option>
-                                    <option value="MA">MA</option>
-                                    <option value="MD">MD</option>
-                                    <option value="ME">ME</option>
-                                    <option value="MI">MI</option>
-                                    <option value="MN">MN</option>
-                                    <option value="MO">MO</option>	
-                                    <option value="MS">MS</option>
-                                    <option value="MT">MT</option>
-                                    <option value="NC">NC</option>	
-                                    <option value="NE">NE</option>
-                                    <option value="NH">NH</option>
-                                    <option value="NJ">NJ</option>
-                                    <option value="NM">NM</option>			
-                                    <option value="NV">NV</option>
-                                    <option value="NY">NY</option>
-                                    <option value="ND">ND</option>
-                                    <option value="OH">OH</option>
-                                    <option value="OK">OK</option>
-                                    <option value="OR">OR</option>
-                                    <option value="PA">PA</option>
-                                    <option value="RI">RI</option>
-                                    <option value="SC">SC</option>
-                                    <option value="SD">SD</option>
-                                    <option value="TN">TN</option>
-                                    <option value="TX">TX</option>
-                                    <option value="UT">UT</option>
-                                    <option value="VT">VT</option>
-                                    <option value="VA">VA</option>
-                                    <option value="WA">WA</option>
-                                    <option value="WI">WI</option>	
-                                    <option value="WV">WV</option>
-                                    <option value="WY">WY</option>
+                                    <option value="AL" th:selected="${#strings.toString(location.state)} == 'AL'">AL</option>
+                                    <option value="AK" th:selected="${#strings.toString(location.state)} == 'AK'">AK</option>
+                                    <option value="AR" th:selected="${#strings.toString(location.state)} == 'AR'">AR</option>	
+                                    <option value="AZ" th:selected="${#strings.toString(location.state)} == 'AZ'">AZ</option>
+                                    <option value="CA" th:selected="${#strings.toString(location.state)} == 'CA'">CA</option>
+                                    <option value="CO" th:selected="${#strings.toString(location.state)} == 'CO'">CO</option>
+                                    <option value="CT" th:selected="${#strings.toString(location.state)} == 'CT'">CT</option>
+                                    <option value="DC" th:selected="${#strings.toString(location.state)} == 'DC'">DC</option>
+                                    <option value="DE" th:selected="${#strings.toString(location.state)} == 'DE'">DE</option>
+                                    <option value="FL" th:selected="${#strings.toString(location.state)} == 'FL'">FL</option>
+                                    <option value="GA" th:selected="${#strings.toString(location.state)} == 'GA'">GA</option>
+                                    <option value="HI" th:selected="${#strings.toString(location.state)} == 'HI'">HI</option>
+                                    <option value="IA" th:selected="${#strings.toString(location.state)} == 'IA'">IA</option>	
+                                    <option value="ID" th:selected="${#strings.toString(location.state)} == 'ID'">ID</option>
+                                    <option value="IL" th:selected="${#strings.toString(location.state)} == 'IL'">IL</option>
+                                    <option value="IN" th:selected="${#strings.toString(location.state)} == 'IN'">IN</option>
+                                    <option value="KS" th:selected="${#strings.toString(location.state)} == 'KS'">KS</option>
+                                    <option value="KY" th:selected="${#strings.toString(location.state)} == 'KY'">KY</option>
+                                    <option value="LA" th:selected="${#strings.toString(location.state)} == 'LA'">LA</option>
+                                    <option value="MA" th:selected="${#strings.toString(location.state)} == 'MA'">MA</option>
+                                    <option value="MD" th:selected="${#strings.toString(location.state)} == 'MD'">MD</option>
+                                    <option value="ME" th:selected="${#strings.toString(location.state)} == 'ME'">ME</option>
+                                    <option value="MN" th:selected="${#strings.toString(location.state)} == 'MN'">MN</option>
+                                    <option value="MO" th:selected="${#strings.toString(location.state)} == 'MO'">MO</option>	
+                                    <option value="MS" th:selected="${#strings.toString(location.state)} == 'MS'">MS</option>
+                                    <option value="MT" th:selected="${#strings.toString(location.state)} == 'MT'">MT</option>
+                                    <option value="NC" th:selected="${#strings.toString(location.state)} == 'NC'">NC</option>	
+                                    <option value="NE" th:selected="${#strings.toString(location.state)} == 'NE'">NE</option>
+                                    <option value="NH" th:selected="${#strings.toString(location.state)} == 'NH'">NH</option>
+                                    <option value="NJ" th:selected="${#strings.toString(location.state)} == 'NJ'">NJ</option>
+                                    <option value="NM" th:selected="${#strings.toString(location.state)} == 'NM'">NM</option>			
+                                    <option value="NV" th:selected="${#strings.toString(location.state)} == 'NV'">NV</option>
+                                    <option value="NY" th:selected="${#strings.toString(location.state)} == 'NY'">NY</option>
+                                    <option value="ND" th:selected="${#strings.toString(location.state)} == 'ND'">ND</option>
+                                    <option value="OH" th:selected="${#strings.toString(location.state)} == 'OH'">OH</option>
+                                    <option value="OK" th:selected="${#strings.toString(location.state)} == 'OK'">OK</option>
+                                    <option value="OR" th:selected="${#strings.toString(location.state)} == 'OR'">OR</option>
+                                    <option value="PA" th:selected="${#strings.toString(location.state)} == 'PA'">PA</option>
+                                    <option value="RI" th:selected="${#strings.toString(location.state)} == 'RI'">RI</option>
+                                    <option value="SC" th:selected="${#strings.toString(location.state)} == 'SC'">SC</option>
+                                    <option value="SD" th:selected="${#strings.toString(location.state)} == 'SD'">SD</option>
+                                    <option value="TN" th:selected="${#strings.toString(location.state)} == 'TN'">TN</option>
+                                    <option value="TX" th:selected="${#strings.toString(location.state)} == 'TX'">TX</option>
+                                    <option value="UT" th:selected="${#strings.toString(location.state)} == 'UT'">UT</option>
+                                    <option value="VT" th:selected="${#strings.toString(location.state)} == 'VT'">VT</option>
+                                    <option value="VA" th:selected="${#strings.toString(location.state)} == 'VA'">VA</option>
+                                    <option value="WA" th:selected="${#strings.toString(location.state)} == 'WA'">WA</option>
+                                    <option value="WI" th:selected="${#strings.toString(location.state)} == 'WI'">WI</option>	
+                                    <option value="WV" th:selected="${#strings.toString(location.state)} == 'WV'">WV</option>
+                                    <option value="WY" th:selected="${#strings.toString(location.state)} == 'WY'">WY</option>
                                 </select>
+                                <div th:if="${#fields.hasErrors('location.state')}">
+                                    <p th:each="error : ${#fields.errors('location.state')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -133,7 +148,11 @@
                                 <label for="zip">Zip:</label>
                             </div>
                             <div class="col-8 text-left">
-                                <input type="text" name="zip" id="zip" class="form-control" th:value="${location.zip}"/>
+                                <input type="text" name="zip" id="zip" class="form-control" th:value="${location.zip}" maxlength="5"/>
+                                <div th:if="${#fields.hasErrors('location.zip')}">
+                                    <p th:each="error : ${#fields.errors('location.zip')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -142,6 +161,10 @@
                             </div>
                             <div class="col-8 text-left">
                                 <input type="text" name="latitude" id="latitude" class="form-control" th:value="${location.latitude}"/>
+                                <div th:if="${#fields.hasErrors('location.latitude')}">
+                                    <p th:each="error : ${#fields.errors('location.latitude')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -150,6 +173,10 @@
                             </div>
                             <div class="col-8 text-left">
                                 <input type="text" name="longitude" id="longitude" class="form-control" th:value="${location.longitude}"/>
+                                <div th:if="${#fields.hasErrors('location.longitude')}">
+                                    <p th:each="error : ${#fields.errors('location.longitude')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
                             </div>
                         </div>
                         <div class="text-center m-4">

@@ -89,24 +89,9 @@ public class SightingDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
 
@@ -141,24 +126,9 @@ public class SightingDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
 
@@ -201,24 +171,9 @@ public class SightingDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
 
@@ -272,24 +227,9 @@ public class SightingDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
 
@@ -328,31 +268,15 @@ public class SightingDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
 
         Hero hero2 = new Hero();
         hero2.setHeroName("Hero Name 2");
         hero2.setDescription("Hero Description");
-        hero2.setOrganizations(organizations);
         hero2.setSuperpowers(superpowers);
         hero2 = heroDao.addHero(hero2);
 
@@ -402,24 +326,9 @@ public class SightingDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
 
@@ -480,24 +389,9 @@ public class SightingDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
 

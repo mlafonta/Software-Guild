@@ -99,7 +99,7 @@ public class SuperpowerDaoDBTest {
         superpower2.setSuperpowerName("Superpower name 2");
         superpower2.setDescription("Superpower description");
         superpower2 = superpowerDao.addSuperpower(superpower2);
-        
+
         List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
         assertEquals(2, superpowers.size());
         assertTrue(superpowers.contains(superpower));
@@ -115,10 +115,10 @@ public class SuperpowerDaoDBTest {
 
         Superpower fromDao = superpowerDao.getSuperpowerBySuperpowerName(superpower.getSuperpowerName());
         assertEquals(superpower, fromDao);
-        
+
         superpower.setDescription("Updated Description");
         assertNotEquals(superpower, fromDao);
-        
+
         superpowerDao.updateSuperpower(superpower);
         fromDao = superpowerDao.getSuperpowerBySuperpowerName(superpower.getSuperpowerName());
         assertEquals(superpower, fromDao);
@@ -134,33 +134,62 @@ public class SuperpowerDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
-        
+
         Superpower fromDao = superpowerDao.getSuperpowerBySuperpowerName(superpower.getSuperpowerName());
         assertEquals(superpower, fromDao);
-        
+
         superpowerDao.deleteSuperpowerBySuperpowerName(superpower.getSuperpowerName());
         fromDao = superpowerDao.getSuperpowerBySuperpowerName(superpower.getSuperpowerName());
         assertNull(fromDao);
     }
 
+    @Test
+    public void testGetSuperpowersForHero() {
+        Superpower superpower = new Superpower();
+        superpower.setSuperpowerName("Superpower name");
+        superpower.setDescription("Superpower description");
+        superpower = superpowerDao.addSuperpower(superpower);
+
+        Superpower superpower2 = new Superpower();
+        superpower2.setSuperpowerName("Superpower name 2");
+        superpower2.setDescription("Superpower description");
+        superpower2 = superpowerDao.addSuperpower(superpower2);
+        
+        Superpower superpower3 = new Superpower();
+        superpower3.setSuperpowerName("Superpower name 3");
+        superpower3.setDescription("Superpower description");
+        superpower3 = superpowerDao.addSuperpower(superpower3);
+        
+        List<Superpower> superpowers = new ArrayList<>();
+        superpowers.add(superpower);
+        superpowers.add(superpower2);
+        superpowers.add(superpower3);
+        
+        List<Superpower> superpowers2 = new ArrayList<>();
+        superpowers2.add(superpower);
+        superpowers2.add(superpower3);
+        
+        Hero hero = new Hero();
+        hero.setHeroName("Hero Name");
+        hero.setDescription("Hero Description");
+        hero.setSuperpowers(superpowers);
+        hero = heroDao.addHero(hero);
+        
+        Hero hero2 = new Hero();
+        hero2.setHeroName("Hero Name 2");
+        hero2.setDescription("Hero Description");
+        hero2.setSuperpowers(superpowers2);
+        hero2 = heroDao.addHero(hero2);
+        
+        List<Superpower> superpowers4 = superpowerDao.getSuperpowersForHero(hero2);
+        assertEquals(2, superpowers4.size());
+        assertTrue(superpowers4.contains(superpower));
+        assertFalse(superpowers4.contains(superpower2));
+        assertTrue(superpowers4.contains(superpower3));
+    }
 }

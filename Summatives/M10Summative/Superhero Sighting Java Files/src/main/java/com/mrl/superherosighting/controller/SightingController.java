@@ -13,13 +13,17 @@ import com.mrl.superherosighting.dao.SuperpowerDao;
 import com.mrl.superherosighting.dto.Hero;
 import com.mrl.superherosighting.dto.Location;
 import com.mrl.superherosighting.dto.Sighting;
+import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -44,30 +48,53 @@ public class SightingController {
 
     @Autowired
     SuperpowerDao superpowerDao;
-    
+
     @GetMapping("sighting")
     public String displaySightings(Model model) {
         List<Sighting> sightings = sightingDao.getAllSightings();
         List<Hero> heroes = heroDao.getAllHeroes();
         List<Location> locations = locationDao.getAllLocations();
+        Sighting sighting = new Sighting();
         model.addAttribute("sightings", sightings);
+        model.addAttribute("sighting", sighting);
         model.addAttribute("heroes", heroes);
         model.addAttribute("locations", locations);
+        model.addAttribute("localDateTime", LocalDateTime.now());
+        model.addAttribute("localDate", LocalDate.now());
+        model.addAttribute("timestamp", Instant.now());
         return "sighting";
     }
-    
+
     @PostMapping("addSighting")
-    public String addSighting(HttpServletRequest request) {
-        Sighting sighting = new Sighting();
-        String dateString = request.getParameter("date");
-        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-        sighting.setDate(date);
+    public String addSighting(@Valid Sighting sighting, BindingResult result, HttpServletRequest request, Model model) {
         String heroName = request.getParameter("heroName");
         sighting.setHero(heroDao.getHeroByHeroName(heroName));
         String locationName = request.getParameter("locationName");
         sighting.setLocation(locationDao.getLocationByLocationName(locationName));
+        if (result.hasErrors()) {
+            List<Sighting> sightings = sightingDao.getAllSightings();
+            List<Hero> heroes = heroDao.getAllHeroes();
+            List<Location> locations = locationDao.getAllLocations();
+            model.addAttribute("sightings", sightings);
+            model.addAttribute("heroes", heroes);
+            model.addAttribute("locations", locations);
+            return "sighting";
+        }
         sightingDao.addSighting(sighting);
         return "redirect:/sighting";
+    }
+
+    @GetMapping("deleteSightingConfirm")
+    public String deleteSightingConfirm(Integer sightingId, Model model) {
+        List<Hero> heroes = heroDao.getAllHeroes();
+        List<Location> locations = locationDao.getAllLocations();
+        model.addAttribute("sightingId", sightingId);
+        model.addAttribute("heroes", heroes);
+        model.addAttribute("locations", locations);
+        model.addAttribute("localDateTime", LocalDateTime.now());
+        model.addAttribute("localDate", LocalDate.now());
+        model.addAttribute("timestamp", Instant.now());
+        return "deleteSightingConfirm";
     }
     
     @GetMapping("deleteSighting")
@@ -75,7 +102,7 @@ public class SightingController {
         sightingDao.deleteSightingById(sightingId);
         return "redirect:/sighting";
     }
-    
+
     @GetMapping("editSighting")
     public String editSighting(Integer sightingId, Model model) {
         Sighting sighting = sightingDao.getSightingById(sightingId);
@@ -86,19 +113,25 @@ public class SightingController {
         model.addAttribute("locations", locations);
         return "editSighting";
     }
-    
+
     @PostMapping("editSighting")
-    public String performEditSighting(Integer sightingId, HttpServletRequest request) {
-        Sighting sighting = sightingDao.getSightingById(sightingId);
-        String dateString = request.getParameter("date");
-        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-        sighting.setDate(date);
+    public String performEditSighting(@Valid Sighting sighting, BindingResult result, HttpServletRequest request, Model model) {
         String heroName = request.getParameter("heroName");
         sighting.setHero(heroDao.getHeroByHeroName(heroName));
         String locationName = request.getParameter("locationName");
         sighting.setLocation(locationDao.getLocationByLocationName(locationName));
+        if (result.hasErrors()) {
+            List<Sighting> sightings = sightingDao.getAllSightings();
+            List<Hero> heroes = heroDao.getAllHeroes();
+            List<Location> locations = locationDao.getAllLocations();
+            model.addAttribute("sightings", sightings);
+            model.addAttribute("heroes", heroes);
+            model.addAttribute("locations", locations);
+            model.addAttribute("sighting", sighting);
+            return "editSighting";
+        }
         sightingDao.updateSighting(sighting);
         return "redirect:/sighting";
     }
-    
+
 }

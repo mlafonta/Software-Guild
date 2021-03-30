@@ -90,24 +90,9 @@ public class HeroDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
 
@@ -125,31 +110,15 @@ public class HeroDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
 
         Hero hero2 = new Hero();
         hero2.setHeroName("Hero Name 2");
         hero2.setDescription("Hero Description 2");
-        hero2.setOrganizations(organizations);
         hero2.setSuperpowers(superpowers);
         hero2 = heroDao.addHero(hero2);
 
@@ -169,24 +138,9 @@ public class HeroDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
 
@@ -218,6 +172,15 @@ public class HeroDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
+        Hero hero = new Hero();
+        hero.setHeroName("Hero Name");
+        hero.setDescription("Hero Description");
+        hero.setSuperpowers(superpowers);
+        hero = heroDao.addHero(hero);
+        
+        List<Hero> heroes = new ArrayList<>();
+        heroes.add(hero);
+        
         Organization organization = new Organization();
         organization.setOrganizationName("Organzation name");
         organization.setDescription("Organization Description");
@@ -227,17 +190,8 @@ public class HeroDaoDBTest {
         organization.setZip("OZip");
         organization.setPhone("Org Phone");
         organization.setEmail("Organization email");
+        organization.setHeroes(heroes);
         organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
-        Hero hero = new Hero();
-        hero.setHeroName("Hero Name");
-        hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
-        hero.setSuperpowers(superpowers);
-        hero = heroDao.addHero(hero);
 
         Hero fromDao = heroDao.getHeroByHeroName(hero.getHeroName());
         assertEquals(hero, fromDao);
@@ -257,7 +211,33 @@ public class HeroDaoDBTest {
 
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
+        Hero hero = new Hero();
+        hero.setHeroName("Hero Name");
+        hero.setDescription("Hero Description");
+        hero.setSuperpowers(superpowers);
+        hero = heroDao.addHero(hero);
 
+        Hero hero2 = new Hero();
+        hero2.setHeroName("Hero Name 2");
+        hero2.setDescription("Hero Description 2");
+        hero2.setSuperpowers(superpowers);
+        hero2 = heroDao.addHero(hero2);
+
+        Hero hero3 = new Hero();
+        hero3.setHeroName("Hero Name 3");
+        hero3.setDescription("Hero Description 3");
+        hero3.setSuperpowers(superpowers);
+        hero3 = heroDao.addHero(hero3);
+        
+        List<Hero> heroes1 = new ArrayList<>();
+        heroes1.add(hero);
+        heroes1.add(hero2);
+        heroes1.add(hero3);
+        
+        List<Hero> heroes2 = new ArrayList<>();
+        heroes2.add(hero);
+        heroes2.add(hero3);
+        
         Organization organization = new Organization();
         organization.setOrganizationName("Organzation name");
         organization.setDescription("Organization Description");
@@ -267,46 +247,8 @@ public class HeroDaoDBTest {
         organization.setZip("OZip");
         organization.setPhone("Org Phone");
         organization.setEmail("Organization email");
+        organization.setHeroes(heroes2);
         organization = organizationDao.addOrganization(organization);
-
-        Organization organization2 = new Organization();
-        organization2.setOrganizationName("Organzation name 2");
-        organization2.setDescription("Organization Description 2");
-        organization2.setAddress("Organization Address 2");
-        organization2.setCity("Organzation City 2");
-        organization2.setState("OS");
-        organization2.setZip("OZip");
-        organization2.setPhone("Org Phone");
-        organization2.setEmail("Organization email 2");
-        organization2 = organizationDao.addOrganization(organization2);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-        organizations.add(organization2);
-
-        List<Organization> organizations2 = new ArrayList<>();
-        organizations2.add(organization2);
-
-        Hero hero = new Hero();
-        hero.setHeroName("Hero Name");
-        hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
-        hero.setSuperpowers(superpowers);
-        hero = heroDao.addHero(hero);
-
-        Hero hero2 = new Hero();
-        hero2.setHeroName("Hero Name 2");
-        hero2.setDescription("Hero Description 2");
-        hero2.setOrganizations(organizations2);
-        hero2.setSuperpowers(superpowers);
-        hero2 = heroDao.addHero(hero2);
-
-        Hero hero3 = new Hero();
-        hero3.setHeroName("Hero Name 3");
-        hero3.setDescription("Hero Description 3");
-        hero3.setOrganizations(organizations);
-        hero3.setSuperpowers(superpowers);
-        hero3 = heroDao.addHero(hero3);
 
         List<Hero> heroes = heroDao.getHeroesForOrganization(organization);
         assertEquals(2, heroes.size());
@@ -325,38 +267,21 @@ public class HeroDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
 
         Hero hero2 = new Hero();
         hero2.setHeroName("Hero Name 2");
         hero2.setDescription("Hero Description 2");
-        hero2.setOrganizations(organizations);
         hero2.setSuperpowers(superpowers);
         hero2 = heroDao.addHero(hero2);
 
         Hero hero3 = new Hero();
         hero3.setHeroName("Hero Name 3");
         hero3.setDescription("Hero Description 3");
-        hero3.setOrganizations(organizations);
         hero3.setSuperpowers(superpowers);
         hero3 = heroDao.addHero(hero3);
 
@@ -399,12 +324,12 @@ public class HeroDaoDBTest {
         sighting3.setHero(hero3);
         sighting3.setLocation(location);
         sighting3 = sightingDao.addSighting(sighting3);
-        
+
         List<Hero> heroes = heroDao.getHeroesForLocation(location);
         assertEquals(2, heroes.size());
         assertTrue(heroes.contains(hero));
         assertFalse(heroes.contains(hero2));
-        assertTrue(heroes.contains(hero3));        
+        assertTrue(heroes.contains(hero3));
     }
 
 }

@@ -41,7 +41,7 @@ public class IndexController {
     @Autowired
     SuperpowerDao superpowerDao;
     
-    @GetMapping("index")
+    @GetMapping("/")
     public String displayHome(Model model) {
         List<Sighting> sightings = sightingDao.getAllSightings();
         List<Sighting> sortedSightings = sightings.stream()

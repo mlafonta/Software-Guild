@@ -5,6 +5,7 @@
  */
 package com.mrl.superherosighting.dao;
 
+import com.mrl.superherosighting.dto.Hero;
 import com.mrl.superherosighting.dto.Superpower;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,6 +64,13 @@ public class SuperpowerDaoDB implements SuperpowerDao {
         
         final String DELETE_SUPERPOWER = "DELETE FROM Superpower WHERE SuperpowerName = ?";
         jdbc.update(DELETE_SUPERPOWER, superpowerName);
+    }
+
+    @Override
+    public List<Superpower> getSuperpowersForHero(Hero hero) {
+        final String SELECT_SUPERPOWERS_FOR_HERO = "SELECT s.* FROM Superpower s JOIN Hero_Superpower hs ON s.SuperpowerName = hs.SuperpowerName WHERE hs.HeroName = ?";
+        List<Superpower> superpowers = jdbc.query(SELECT_SUPERPOWERS_FOR_HERO, new SuperpowerMapper(), hero.getHeroName());
+        return superpowers;
     }
     
     public static final class SuperpowerMapper implements RowMapper<Superpower> {

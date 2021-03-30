@@ -2,5 +2,6 @@ com\mrl\superherosighting\dao\HeroDaoDBTest.class
 com\mrl\superherosighting\dao\SightingDaoDBTest.class
 com\mrl\superherosighting\dao\OrganizationDaoDBTest.class
 com\mrl\superherosighting\dao\LocationDaoDBTest.class
+.netbeans_automatic_build
 com\mrl\superherosighting\dao\SuperpowerDaoDBTest.class
 com\mrl\superherosighting\SuperherosightingApplicationTests.class

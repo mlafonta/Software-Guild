@@ -7,19 +7,35 @@ package com.mrl.superherosighting.dto;
 
 import java.util.List;
 import java.util.Objects;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
  * @author flafo
  */
 public class Organization {
+    @NotBlank(message = "Name required")
+    @Size(max = 100, message = "Name must be less than 100 characters")
     private String organizationName;
+    @NotBlank(message = "Description required")
+    @Size(max = 255, message = "Description must be less than 255 characters")
     private String description;
+    @NotBlank(message = "Address required")
+    @Size(max = 50, message = "Address must be less than 100 characters")
     private String address;
+    @NotBlank(message = "City required")
+    @Size(max = 50, message = "City must be less than 45 characters")
     private String city;
+    @NotBlank(message = "State required")
     private String state;
+    @Pattern(regexp = "\\d{5}", message = "Five digit Zip required")
     private String zip;
+    @Pattern(regexp = "\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*", message = "Phone must be valid phone number" )
     private String phone;
+    @Email(message = "Email must be a valid email address")
     private String email;
     private List<Hero> heroes;
 

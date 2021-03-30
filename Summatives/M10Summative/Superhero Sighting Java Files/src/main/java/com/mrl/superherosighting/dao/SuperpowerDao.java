@@ -5,6 +5,7 @@
  */
 package com.mrl.superherosighting.dao;
 
+import com.mrl.superherosighting.dto.Hero;
 import com.mrl.superherosighting.dto.Superpower;
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface SuperpowerDao {
     void updateSuperpower(Superpower superpower);
 
     void deleteSuperpowerBySuperpowerName(String superpowerName);
+
+    public List<Superpower> getSuperpowersForHero(Hero hero);
 }

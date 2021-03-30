@@ -161,26 +161,15 @@ public class LocationDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
+        List<Hero> heroes = new ArrayList<>();
+        heroes.add(hero);
+        
+
         Location location = new Location();
         location.setLocationName("Location Name");
         location.setDescription("Location Description");
@@ -217,31 +206,15 @@ public class LocationDaoDBTest {
         List<Superpower> superpowers = new ArrayList<>();
         superpowers.add(superpower);
 
-        Organization organization = new Organization();
-        organization.setOrganizationName("Organzation name");
-        organization.setDescription("Organization Description");
-        organization.setAddress("Organization Address");
-        organization.setCity("Organzation City");
-        organization.setState("OS");
-        organization.setZip("OZip");
-        organization.setPhone("Org Phone");
-        organization.setEmail("Organization email");
-        organization = organizationDao.addOrganization(organization);
-
-        List<Organization> organizations = new ArrayList<>();
-        organizations.add(organization);
-
         Hero hero = new Hero();
         hero.setHeroName("Hero Name");
         hero.setDescription("Hero Description");
-        hero.setOrganizations(organizations);
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
 
         Hero hero2 = new Hero();
         hero2.setHeroName("Hero Name 2");
         hero2.setDescription("Hero Description 2");
-        hero2.setOrganizations(organizations);
         hero2.setSuperpowers(superpowers);
         hero2 = heroDao.addHero(hero2);
 
@@ -289,13 +262,13 @@ public class LocationDaoDBTest {
         sighting2.setHero(hero2);
         sighting2.setLocation(location2);
         sighting2 = sightingDao.addSighting(sighting2);
-        
+
         Sighting sighting3 = new Sighting();
         sighting3.setDate(LocalDate.of(1990, Month.MARCH, 2));
         sighting3.setHero(hero);
         sighting3.setLocation(location3);
         sighting3 = sightingDao.addSighting(sighting3);
-        
+
         List<Location> locations = locationDao.getLocationsForHero(hero);
         assertEquals(2, locations.size());
         assertTrue(locations.contains(location));

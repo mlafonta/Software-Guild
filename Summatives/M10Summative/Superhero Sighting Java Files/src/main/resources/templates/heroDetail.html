@@ -15,7 +15,7 @@
         <div class="container">
             <div class="row m-4">
                 <div class="col text-center border border-dark">
-                    <h1><a href="index" style="color: black; text-decoration: none;">The HERO Tracker</a></h1>
+                    <h1><a href="/" style="color: black; text-decoration: none;">The HERO Tracker</a></h1>
                 </div>
             </div>
             <div class="row m-4">
@@ -49,7 +49,7 @@
                     <div class="col-6 text-right">
                         <strong>Organizations</strong></div>
                     <div class="col-6 text-left">
-                        <span th:each="organization : ${hero.organizations}">
+                        <span th:each="organization : ${organizations}">
                             <span th:text="${organization.organizationName}">
                                 display organizations
                             </span><br/>
@@ -72,6 +72,20 @@
                                 display locations
                             </span><br/>
                         </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-right col-md-6">
+                        <form action="editHero" method="GET">
+                            <input type="hidden" name="heroName" id="heroName" th:value="${heroName}">
+                            <button type="submit" class="btn btn-primary m-3">Edit</button>
+                        </form>
+                    </div>
+                    <div class="text-left col-md-6">
+                        <form action="deleteHeroConfirm" method="GET">
+                            <input type="hidden" name="heroName" id="heroName" th:value="${heroName}">
+                            <button type="submit" class="btn btn-primary m-3">Delete</button>
+                        </form>
                     </div>
                 </div>
             </div>

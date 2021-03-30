@@ -107,9 +107,6 @@ public class SightingDaoDB implements SightingDao {
         final String SELECT_SUPERPOWERS_FOR_HERO = "SELECT s.* FROM Superpower s JOIN Hero_Superpower hs ON s.SuperpowerName = hs.SuperpowerName WHERE hs.HeroName = ?";
         List<Superpower> superpowers = jdbc.query(SELECT_SUPERPOWERS_FOR_HERO, new SuperpowerDaoDB.SuperpowerMapper(), hero.getHeroName());
         hero.setSuperpowers(superpowers);
-        final String SELECT_organIZATIONS_FOR_HERO = "SELECT o.* FROM organization o JOIN Hero_organization ho ON o.organizationName = ho.organizationName WHERE ho.HeroName = ?";
-        List<Organization> organizations = jdbc.query(SELECT_organIZATIONS_FOR_HERO, new OrganizationDaoDB.OrganizationMapper(), hero.getHeroName());
-        hero.setOrganizations(organizations);
         return hero;
     }
 

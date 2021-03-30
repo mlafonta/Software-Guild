@@ -6,13 +6,20 @@
 package com.mrl.superherosighting.dto;
 
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  *
  * @author flafo
  */
 public class Superpower {
+
+    @NotBlank(message = "Name required")
+    @Size(max = 30, message = "Name must be less than 30 characters")
     private String superpowerName;
+    @NotBlank(message = "Description required")
+    @Size(max = 255, message = "Description must be less than 255 characters")
     private String description;
 
     public String getSuperpowerName() {
@@ -59,5 +66,5 @@ public class Superpower {
         }
         return true;
     }
-    
+
 }

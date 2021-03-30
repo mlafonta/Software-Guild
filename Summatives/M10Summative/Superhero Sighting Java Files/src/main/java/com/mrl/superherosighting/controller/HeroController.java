@@ -17,9 +17,12 @@ import com.mrl.superherosighting.dto.Superpower;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -49,34 +52,45 @@ public class HeroController {
     public String displayHeroes(Model model) {
         List<Hero> heroes = heroDao.getAllHeroes();
         List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
-        List<Organization> organizations = organizationDao.getAllOrganizations();
+        Hero hero = new Hero();
         model.addAttribute("heroes", heroes);
         model.addAttribute("superpowers", superpowers);
-        model.addAttribute("organizations", organizations);
+        model.addAttribute("hero", hero);
         return "hero";
     }
 
     @PostMapping("addHero")
-    public String addHero(Hero hero, HttpServletRequest request) {
-        String[] organizationNames = request.getParameterValues("organizationName");
+    public String addHero(@Valid Hero hero, BindingResult result, HttpServletRequest request, Model model) {
         String[] superpowerNames = request.getParameterValues("superpowerName");
-        List<Organization> organizations = new ArrayList<>();
-        if (organizationNames != null) {
-            for (String organizationName : organizationNames) {
-                organizations.add(organizationDao.getOrganizationByOrganizationName(organizationName));
-            }
-            hero.setOrganizations(organizations);
-        }
         List<Superpower> superpowers = new ArrayList<>();
         if (superpowerNames != null) {
             for (String superpowerName : superpowerNames) {
                 superpowers.add(superpowerDao.getSuperpowerBySuperpowerName(superpowerName));
             }
             hero.setSuperpowers(superpowers);
+        } else {
+            FieldError error = new FieldError("hero", "superpowers", "Must include at least one superpower");
+            result.addError(error);
+        }
+        if (result.hasErrors()) {
+            List<Hero> heroes = heroDao.getAllHeroes();
+            List<Superpower> superpowers2 = superpowerDao.getAllSuperpowers();
+            model.addAttribute("heroes", heroes);
+            model.addAttribute("superpowers", superpowers2);
+            model.addAttribute("hero", hero);
+            return "hero";
         }
         heroDao.addHero(hero);
 
         return "redirect:/hero";
+    }
+
+    @GetMapping("deleteHeroConfirm")
+    public String confirmDeleteHero(String heroName, Model model) {
+        List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
+        model.addAttribute("superpowers", superpowers);
+        model.addAttribute("heroName", heroName);
+        return "deleteHeroConfirm";
     }
 
     @GetMapping("deleteHero")
@@ -89,8 +103,11 @@ public class HeroController {
     public String heroDetail(String heroName, Model model) {
         Hero hero = heroDao.getHeroByHeroName(heroName);
         List<Location> sightingLocations = locationDao.getLocationsForHero(hero);
+        List<Organization> organizations = organizationDao.getOrganizationsForHero(hero);
         model.addAttribute("hero", hero);
         model.addAttribute("sightingLocations", sightingLocations);
+        model.addAttribute("organizations", organizations);
+        model.addAttribute("heroName", heroName);
         return "heroDetail";
     }
 
@@ -106,25 +123,38 @@ public class HeroController {
     }
 
     @PostMapping("editHero")
-    public String performEditHero(Hero hero, HttpServletRequest request) {
-        String[] organizationNames = request.getParameterValues("organizationName");
+    public String performEditHero(@Valid Hero hero, BindingResult result, HttpServletRequest request, Model model) {
         String[] superpowerNames = request.getParameterValues("superpowerName");
-        List<Organization> organizations = new ArrayList<>();
-        if (organizationNames != null) {
-            for (String organizationName : organizationNames) {
-                organizations.add(organizationDao.getOrganizationByOrganizationName(organizationName));
-            }
-            hero.setOrganizations(organizations);
-        }
         List<Superpower> superpowers = new ArrayList<>();
+
         if (superpowerNames != null) {
             for (String superpowerName : superpowerNames) {
                 superpowers.add(superpowerDao.getSuperpowerBySuperpowerName(superpowerName));
             }
             hero.setSuperpowers(superpowers);
+        } else {
+            FieldError error = new FieldError("hero", "superpowers", "Must include at least one superpower");
+            result.addError(error);
+        }
+        if (result.hasErrors()) {
+            List<Hero> heroes = heroDao.getAllHeroes();
+            List<Superpower> superpowers2 = superpowerDao.getAllSuperpowers();
+            List<Organization> organizations = organizationDao.getAllOrganizations();
+            List<Superpower> superpowers3 = superpowerDao.getSuperpowersForHero(hero);
+            hero.setSuperpowers(superpowers3);
+            model.addAttribute("heroes", heroes);
+            model.addAttribute("superpowers", superpowers2);
+            model.addAttribute("organizations", organizations);
+            model.addAttribute("hero", hero);
+            return "editHero";
         }
         heroDao.updateHero(hero);
-
-        return "redirect:/hero";
+        String heroName = hero.getHeroName();
+        List<Location> sightingLocations = locationDao.getLocationsForHero(hero);
+        List<Organization> organizations = organizationDao.getOrganizationsForHero(hero);
+        model.addAttribute("heroName", heroName);
+        model.addAttribute("sightingLocations", sightingLocations);
+        model.addAttribute("organizations", organizations);
+        return "heroDetail";
     }
 }

@@ -10,6 +10,9 @@ import com.mrl.superherosighting.dto.Location;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 public class LocationDaoDB implements LocationDao {
-    
+
     @Autowired
     JdbcTemplate jdbc;
 
@@ -32,7 +35,7 @@ public class LocationDaoDB implements LocationDao {
         try {
             final String SELECT_LOCATION_BY_NAME = "SELECT * FROM Location WHERE LocationName = ?";
             return jdbc.queryForObject(SELECT_LOCATION_BY_NAME, new LocationMapper(), locationName);
-        } catch(DataAccessException ex) {
+        } catch (DataAccessException ex) {
             return null;
         }
     }
@@ -69,10 +72,11 @@ public class LocationDaoDB implements LocationDao {
     public List<Location> getLocationsForHero(Hero hero) {
         final String SELECT_LOCATIONS_FOR_HERO = "SELECT l.* FROM Location l JOIN Sighting s ON s.LocationName = l.LocationName WHERE s.HeroName = ?";
         List<Location> locations = jdbc.query(SELECT_LOCATIONS_FOR_HERO, new LocationMapper(), hero.getHeroName());
-        return locations;
+        return locations.stream()
+                .distinct()
+                .collect(Collectors.toList());
     }
-    
-    
+
     public static final class LocationMapper implements RowMapper<Location> {
 
         @Override
@@ -88,6 +92,6 @@ public class LocationDaoDB implements LocationDao {
             location.setLongitude(rs.getString("longitude"));
             return location;
         }
-        
+
     }
 }

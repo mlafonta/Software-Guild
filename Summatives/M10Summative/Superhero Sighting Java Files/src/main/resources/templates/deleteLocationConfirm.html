@@ -31,24 +31,22 @@
             </div>
             <div class="row m-4">
                 <div class="col-md-6 ml-2 mr-3 mt-2 mb-2">
-                    <table class="table table-striped mt-3">
-                        <thead>
-                            <tr>
-                                <th width="50%">Location</th>
-                                <th width="20%">Details</th>
-                                <th width="15%">Edit</th>
-                                <th width="15%">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="location : ${locations}">
-                                <td th:text="${location.locationName}">Hero Name</td>
-                                <td><a href="#" th:href="@{/locationDetail(locationName=${location.locationName})}">Details</a></td>
-                                <td><a href="#" th:href="@{/editLocation(locationName=${location.locationName})}">Edit</a></td>
-                                <td><a href="#" th:href="@{/deleteLocationConfirm(locationName=${location.locationName})}">Delete</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <h5 class="text-center mb-3">
+                        Confirm Deletion of <span th:text="${locationName}"></span>
+                    </h5> 
+                    <div class="row">
+                        <div class="col-md-6 text-right">
+                            <form action="deleteLocation" method="GET">
+                                <input type="hidden" name="locationName" th:value="${locationName}" />
+                                <button type="submit" class="btn btn-primary">Confirm</button>
+                            </form>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <form action="location" method="GET">
+                                <button type="submit" class="btn btn-primary">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-5 m-2">
                     <h2 class="mt-3">Add Location</h2>
@@ -59,10 +57,6 @@
                             </label>
                             <div class="col-8 align-left">
                                 <input type="text" name="locationName" id="locationName" class="form-control" />
-                                <div th:if="${#fields.hasErrors('location.locationName')}">
-                                    <p th:each="error : ${#fields.errors('location.locationName')}" class="alert alert-danger"
-                                       th:text="${error}"></p>
-                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -70,11 +64,7 @@
                                 Description:
                             </label>
                             <div class="col-8 align-left">
-                                <textarea form="addLocation" name="description" id="description" class="form-control" rows="4" style="resize: none;"></textarea>
-                                <div th:if="${#fields.hasErrors('location.description')}">
-                                    <p th:each="error : ${#fields.errors('location.description')}" class="alert alert-danger"
-                                       th:text="${error}"></p>
-                                </div>
+                                <textarea form="addLocation" name="description" id="description" class="form-control" rows="4" style="resize: none;"></textarea>                                
                             </div>
                         </div>
                         <div class="form-group row">
@@ -83,10 +73,6 @@
                             </label>
                             <div class="col-8 align-left">
                                 <input type="text" name="address" id="address" class="form-control" />
-                                <div th:if="${#fields.hasErrors('location.address')}">
-                                    <p th:each="error : ${#fields.errors('location.address')}" class="alert alert-danger"
-                                       th:text="${error}"></p>
-                                </div>
                             </div>                            
                         </div>
                         <div class="form-group row">
@@ -95,10 +81,6 @@
                             </label>
                             <div class="col-8 align-left">
                                 <input type="text" name="city" id="city" class="form-control" />
-                                <div th:if="${#fields.hasErrors('location.city')}">
-                                    <p th:each="error : ${#fields.errors('location.city')}" class="alert alert-danger"
-                                       th:text="${error}"></p>
-                                </div>
                             </div>                            
                         </div>
                         <div class="form-group row">
@@ -160,10 +142,6 @@
                                     <option value="WV">WV</option>
                                     <option value="WY">WY</option>
                                 </select>
-                                <div th:if="${#fields.hasErrors('location.state')}">
-                                    <p th:each="error : ${#fields.errors('location.state')}" class="alert alert-danger"
-                                       th:text="${error}"></p>
-                                </div>
                             </div>                            
                         </div>
                         <div class="form-group row">
@@ -171,11 +149,7 @@
                                 Zip:
                             </label>
                             <div class="col-8 align-left">
-                                <input type="text" name="zip" id="zip" class="form-control" maxlength="5"/>
-                                <div th:if="${#fields.hasErrors('location.zip')}">
-                                    <p th:each="error : ${#fields.errors('location.zip')}" class="alert alert-danger"
-                                       th:text="${error}"></p>
-                                </div>
+                                <input type="text" name="zip" id="zip" class="form-control" maxlength="5"/>                                
                             </div>                            
                         </div>
                         <div class="form-group row">
@@ -184,10 +158,6 @@
                             </label>
                             <div class="col-8 align-left">
                                 <input type="text" name="latitude" id="latitude" class="form-control" maxlength="10"/>
-                                <div th:if="${#fields.hasErrors('location.latitude')}">
-                                    <p th:each="error : ${#fields.errors('location.latitude')}" class="alert alert-danger"
-                                       th:text="${error}"></p>
-                                </div>
                             </div>                            
                         </div>
                         <div class="form-group row">
@@ -196,10 +166,6 @@
                             </label>
                             <div class="col-8 align-left">
                                 <input type="text" name="longitude" id="longitude" class="form-control" maxlength="10"/>
-                                <div th:if="${#fields.hasErrors('location.longitude')}">
-                                    <p th:each="error : ${#fields.errors('location.longitude')}" class="alert alert-danger"
-                                       th:text="${error}"></p>
-                                </div>
                             </div>                            
                         </div>
                         <div class="d-flex justify-content-center m-4">

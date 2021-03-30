@@ -7,6 +7,10 @@ package com.mrl.superherosighting.dto;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -14,6 +18,9 @@ import java.util.Objects;
  */
 public class Sighting {
     private int sightingId;
+    @Past(message = "Date must have already occured")
+    @NotNull(message = "Date required")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private Hero hero;
     private Location location;

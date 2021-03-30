@@ -15,7 +15,7 @@
         <div class="container">
             <div class="row m-4">
                 <div class="col text-center border border-dark">
-                    <h1><a href="index" style="color: black; text-decoration: none;">The HERO Tracker</a></h1>
+                    <h1><a href="/" style="color: black; text-decoration: none;">The HERO Tracker</a></h1>
                 </div>
             </div>
             <div class="row m-4">
@@ -82,7 +82,7 @@
                     <div class="col-6 text-left">
                         <span th:text="${location.longitude}">display longitude</span>
                     </div>
-                    <div class="col-6 text-right">
+                    <div class="col-6 text-right mb-2">
                         <strong>Heroes Sighted At This Location</strong></div>
                     <div class="col-6 text-left mb-2">
                         <span th:each="hero : ${sightingHeroes}">
@@ -90,6 +90,20 @@
                                 display heroes
                             </span><br/>
                         </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-right col-md-6">
+                        <form action="editLocation" method="GET">
+                            <input type="hidden" name="locationName" id="locationName" th:value="${locationName}">
+                            <button type="submit" class="btn btn-primary m-3">Edit</button>
+                        </form>
+                    </div>
+                    <div class="text-left col-md-6">
+                        <form action="deleteLocationConfirm" method="GET">
+                            <input type="hidden" name="locationName" id="locationName" th:value="${locationName}">
+                            <button type="submit" class="btn btn-primary m-3">Delete</button>
+                        </form>
                     </div>
                 </div>
             </div>
