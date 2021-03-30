@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -53,6 +54,11 @@ public class SuperpowerController {
 
     @PostMapping("addSuperpower")
     public String addSuperpower(@Valid Superpower superpower, BindingResult result, Model model) {
+        Superpower duplicate = superpowerDao.getSuperpowerBySuperpowerName(superpower.getSuperpowerName());
+        if(duplicate != null) {
+            FieldError error = new FieldError("superpower", "superpowerName", "Name must be unique");;
+            result.addError(error);
+        }
         if (result.hasErrors()) {
             List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
             model.addAttribute("superpower", superpower);

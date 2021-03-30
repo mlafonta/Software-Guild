@@ -63,6 +63,11 @@ public class HeroController {
     public String addHero(@Valid Hero hero, BindingResult result, HttpServletRequest request, Model model) {
         String[] superpowerNames = request.getParameterValues("superpowerName");
         List<Superpower> superpowers = new ArrayList<>();
+        Hero duplicate = heroDao.getHeroByHeroName(hero.getHeroName());
+        if(duplicate != null) {
+            FieldError error = new FieldError("hero", "heroName", "Name must be unique");;
+            result.addError(error);
+        }
         if (superpowerNames != null) {
             for (String superpowerName : superpowerNames) {
                 superpowers.add(superpowerDao.getSuperpowerBySuperpowerName(superpowerName));

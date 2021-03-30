@@ -61,6 +61,11 @@ public class OrganizationController {
     public String addOrganization(@Valid Organization organization, BindingResult result, HttpServletRequest request, Model model) {
         String[] heroNames = request.getParameterValues("heroName");
         List<Hero> heroes = new ArrayList<>();
+        Organization duplicate = organizationDao.getOrganizationByOrganizationName(organization.getOrganizationName());
+        if(duplicate != null) {
+            FieldError error = new FieldError("organization", "organizationName", "Name must be unique");;
+            result.addError(error);
+        }
         if (heroNames != null) {
             for (String heroName : heroNames) {
                 heroes.add(heroDao.getHeroByHeroName(heroName));

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -54,6 +55,11 @@ public class LocationController {
 
     @PostMapping("addLocation")
     public String addLocation(@Valid Location location, BindingResult result, Model model) {
+        Location duplicate = locationDao.getLocationByLocationName(location.getLocationName());
+        if(duplicate != null) {
+            FieldError error = new FieldError("location", "locationName", "Name must be unique");;
+            result.addError(error);
+        }
         if (result.hasErrors()) {
             List<Location> locations = locationDao.getAllLocations();
             model.addAttribute("locations", locations);
