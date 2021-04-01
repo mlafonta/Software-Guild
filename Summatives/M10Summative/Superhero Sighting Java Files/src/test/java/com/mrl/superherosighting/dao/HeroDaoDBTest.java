@@ -177,10 +177,10 @@ public class HeroDaoDBTest {
         hero.setDescription("Hero Description");
         hero.setSuperpowers(superpowers);
         hero = heroDao.addHero(hero);
-        
+
         List<Hero> heroes = new ArrayList<>();
         heroes.add(hero);
-        
+
         Organization organization = new Organization();
         organization.setOrganizationName("Organzation name");
         organization.setDescription("Organization Description");
@@ -192,6 +192,23 @@ public class HeroDaoDBTest {
         organization.setEmail("Organization email");
         organization.setHeroes(heroes);
         organization = organizationDao.addOrganization(organization);
+
+        Location location = new Location();
+        location.setLocationName("Location Name");
+        location.setDescription("Location Description");
+        location.setAddress("Location Address");
+        location.setCity("Location City");
+        location.setState("LS");
+        location.setZip("LZip");
+        location.setLatitude("L Lat");
+        location.setLongitude("L Lon");
+        location = locationDao.addLocation(location);
+        
+        Sighting sighting = new Sighting();
+        sighting.setDate(LocalDate.of(1990, Month.MARCH, 2));
+        sighting.setHero(hero);
+        sighting.setLocation(location);
+        sighting = sightingDao.addSighting(sighting);
 
         Hero fromDao = heroDao.getHeroByHeroName(hero.getHeroName());
         assertEquals(hero, fromDao);
@@ -228,16 +245,16 @@ public class HeroDaoDBTest {
         hero3.setDescription("Hero Description 3");
         hero3.setSuperpowers(superpowers);
         hero3 = heroDao.addHero(hero3);
-        
+
         List<Hero> heroes1 = new ArrayList<>();
         heroes1.add(hero);
         heroes1.add(hero2);
         heroes1.add(hero3);
-        
+
         List<Hero> heroes2 = new ArrayList<>();
         heroes2.add(hero);
         heroes2.add(hero3);
-        
+
         Organization organization = new Organization();
         organization.setOrganizationName("Organzation name");
         organization.setDescription("Organization Description");
