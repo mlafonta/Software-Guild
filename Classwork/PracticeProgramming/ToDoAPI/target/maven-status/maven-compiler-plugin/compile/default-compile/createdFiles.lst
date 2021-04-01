@@ -1,5 +1,0 @@
-com\mrl\todoapi\App.class
-com\mrl\todoapi\data\ToDoDao.class
-com\mrl\todoapi\data\ToDoInMemoryDao.class
-com\mrl\todoapi\controllers\ToDoController.class
-com\mrl\todoapi\models\ToDo.class

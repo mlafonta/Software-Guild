@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.mrl.classroster.dao.StudentDaoDBTest
--------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.675 s - in com.mrl.classroster.dao.StudentDaoDBTest
