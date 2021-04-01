@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+        <title>HERO Tracker</title>
+    </head>
+    <body>
+        <!-- Main Body of Page -->
+        <div class="container">
+            <div class="row m-4">
+                <div class="col text-center border border-dark">
+                    <h1><a href="/" style="color: black; text-decoration: none;">The HERO Tracker</a></h1>
+                </div>
+            </div>
+            <div class="row m-4">
+                <div class="col text-center border border-dark">
+                    <div class="navbar">
+                        <a href="hero">Heroes</a>
+                        <a href="location">Locations</a>
+                        <a href="organization">Organizations</a>
+                        <a href="superpower">Superpowers</a>
+                        <a href="sighting">Sightings</a>
+                    </div>
+                </div>
+            </div>
+            <div class="m-4 border border-dark">
+                <div class="text-center m-2 mb-3">
+                    <h2>Edit Organization</h2>
+                </div>
+                <div class="row justify-content-center">
+                    <form action="editOrganization" method="POST" id="editOrganization">
+                        <div class="form-group row">
+                            <div class="col-4 text-right col-form-label">
+                                <label for="organizationName">Name:</label>
+                            </div>
+                            <div class="col-8 text-left">
+                                <input type="text" name="organizationName" id="organizationName" class="form-control" th:value="${organization.organizationName}" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-4 col-form-label text-right">
+                                <label for="description">Description:</label>
+                            </div>                            
+                            <div class="col-8 text-left">
+                                <textarea name="description" id="description" class="form-control" rows="4" style="resize: none;" th:text="${organization.description}">description text</textarea> 
+                                <div th:if="${#fields.hasErrors('organization.description')}">
+                                    <p th:each="error : ${#fields.errors('organization.description')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-4 col-form-label text-right">
+                                <label for="address">Address:</label>
+                            </div>
+                            <div class="col-8 text-left">
+                                <input type="text" name="address" id="address" class="form-control" th:value="${organization.address}"/>
+                                <div th:if="${#fields.hasErrors('organization.address')}">
+                                    <p th:each="error : ${#fields.errors('organization.address')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-4 col-form-label text-right">
+                                <label for="city">City:</label>
+                            </div>
+                            <div class="col-8 text-left">
+                                <input type="text" name="city" id="city" class="form-control" th:value="${organization.city}"/>
+                                <div th:if="${#fields.hasErrors('organization.city')}">
+                                    <p th:each="error : ${#fields.errors('organization.city')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-4 col-form-label text-right">
+                                <label for="state">State:</label>
+                            </div>
+                            <div class="col-5 text-left">
+                                <select id="state" name="state" class="form-control">
+                                    <option value=""></option>
+                                    <option value="AL" th:selected="${#strings.toString(organization.state)} == 'AL'">AL</option>
+                                    <option value="AK" th:selected="${#strings.toString(organization.state)} == 'AK'">AK</option>
+                                    <option value="AR" th:selected="${#strings.toString(organization.state)} == 'AR'">AR</option>	
+                                    <option value="AZ" th:selected="${#strings.toString(organization.state)} == 'AZ'">AZ</option>
+                                    <option value="CA" th:selected="${#strings.toString(organization.state)} == 'CA'">CA</option>
+                                    <option value="CO" th:selected="${#strings.toString(organization.state)} == 'CO'">CO</option>
+                                    <option value="CT" th:selected="${#strings.toString(organization.state)} == 'CT'">CT</option>
+                                    <option value="DC" th:selected="${#strings.toString(organization.state)} == 'DC'">DC</option>
+                                    <option value="DE" th:selected="${#strings.toString(organization.state)} == 'DE'">DE</option>
+                                    <option value="FL" th:selected="${#strings.toString(organization.state)} == 'FL'">FL</option>
+                                    <option value="GA" th:selected="${#strings.toString(organization.state)} == 'GA'">GA</option>
+                                    <option value="HI" th:selected="${#strings.toString(organization.state)} == 'HI'">HI</option>
+                                    <option value="IA" th:selected="${#strings.toString(organization.state)} == 'IA'">IA</option>	
+                                    <option value="ID" th:selected="${#strings.toString(organization.state)} == 'ID'">ID</option>
+                                    <option value="IL" th:selected="${#strings.toString(organization.state)} == 'IL'">IL</option>
+                                    <option value="IN" th:selected="${#strings.toString(organization.state)} == 'IN'">IN</option>
+                                    <option value="KS" th:selected="${#strings.toString(organization.state)} == 'KS'">KS</option>
+                                    <option value="KY" th:selected="${#strings.toString(organization.state)} == 'KY'">KY</option>
+                                    <option value="LA" th:selected="${#strings.toString(organization.state)} == 'LA'">LA</option>
+                                    <option value="MA" th:selected="${#strings.toString(organization.state)} == 'MA'">MA</option>
+                                    <option value="MD" th:selected="${#strings.toString(organization.state)} == 'MD'">MD</option>
+                                    <option value="ME" th:selected="${#strings.toString(organization.state)} == 'ME'">ME</option>
+                                    <option value="MN" th:selected="${#strings.toString(organization.state)} == 'MN'">MN</option>
+                                    <option value="MO" th:selected="${#strings.toString(organization.state)} == 'MO'">MO</option>	
+                                    <option value="MS" th:selected="${#strings.toString(organization.state)} == 'MS'">MS</option>
+                                    <option value="MT" th:selected="${#strings.toString(organization.state)} == 'MT'">MT</option>
+                                    <option value="NC" th:selected="${#strings.toString(organization.state)} == 'NC'">NC</option>	
+                                    <option value="NE" th:selected="${#strings.toString(organization.state)} == 'NE'">NE</option>
+                                    <option value="NH" th:selected="${#strings.toString(organization.state)} == 'NH'">NH</option>
+                                    <option value="NJ" th:selected="${#strings.toString(organization.state)} == 'NJ'">NJ</option>
+                                    <option value="NM" th:selected="${#strings.toString(organization.state)} == 'NM'">NM</option>			
+                                    <option value="NV" th:selected="${#strings.toString(organization.state)} == 'NV'">NV</option>
+                                    <option value="NY" th:selected="${#strings.toString(organization.state)} == 'NY'">NY</option>
+                                    <option value="ND" th:selected="${#strings.toString(organization.state)} == 'ND'">ND</option>
+                                    <option value="OH" th:selected="${#strings.toString(organization.state)} == 'OH'">OH</option>
+                                    <option value="OK" th:selected="${#strings.toString(organization.state)} == 'OK'">OK</option>
+                                    <option value="OR" th:selected="${#strings.toString(organization.state)} == 'OR'">OR</option>
+                                    <option value="PA" th:selected="${#strings.toString(organization.state)} == 'PA'">PA</option>
+                                    <option value="RI" th:selected="${#strings.toString(organization.state)} == 'RI'">RI</option>
+                                    <option value="SC" th:selected="${#strings.toString(organization.state)} == 'SC'">SC</option>
+                                    <option value="SD" th:selected="${#strings.toString(organization.state)} == 'SD'">SD</option>
+                                    <option value="TN" th:selected="${#strings.toString(organization.state)} == 'TN'">TN</option>
+                                    <option value="TX" th:selected="${#strings.toString(organization.state)} == 'TX'">TX</option>
+                                    <option value="UT" th:selected="${#strings.toString(organization.state)} == 'UT'">UT</option>
+                                    <option value="VT" th:selected="${#strings.toString(organization.state)} == 'VT'">VT</option>
+                                    <option value="VA" th:selected="${#strings.toString(organization.state)} == 'VA'">VA</option>
+                                    <option value="WA" th:selected="${#strings.toString(organization.state)} == 'WA'">WA</option>
+                                    <option value="WI" th:selected="${#strings.toString(organization.state)} == 'WI'">WI</option>	
+                                    <option value="WV" th:selected="${#strings.toString(organization.state)} == 'WV'">WV</option>
+                                    <option value="WY" th:selected="${#strings.toString(organization.state)} == 'WY'">WY</option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('organization.state')}">
+                                    <p th:each="error : ${#fields.errors('organization.state')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-4 col-form-label text-right">
+                                <label for="zip">Zip:</label>
+                            </div>
+                            <div class="col-8 text-left">
+                                <input type="text" name="zip" id="zip" class="form-control" th:value="${organization.zip}" maxlength="5"/>
+                                <div th:if="${#fields.hasErrors('organization.zip')}">
+                                    <p th:each="error : ${#fields.errors('organization.zip')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-4 col-form-label text-right">
+                                <label for="phone">Phone:</label>
+                            </div>
+                            <div class="col-8 text-left">
+                                <input type="text" name="phone" id="phone" class="form-control" th:value="${organization.phone}" maxlength="13"/>
+                                <div th:if="${#fields.hasErrors('organization.phone')}">
+                                    <p th:each="error : ${#fields.errors('organization.phone')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-4 col-form-label text-right">
+                                <label for="email">Email:</label>
+                            </div>
+                            <div class="col-8 text-left">
+                                <input type="text" name="email" id="email" class="form-control" th:value="${organization.email}"/>
+                                <div th:if="${#fields.hasErrors('organization.email')}">
+                                    <p th:each="error : ${#fields.errors('organization.email')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-4 col-form-label text-right">
+                                <label for="heroes">Heroes</label>
+                            </div>
+                            <div class="col-8 align-left">
+                                <th:block th:each="hero : ${heroes}">
+                                    <div>
+                                        <input type="checkbox" name="heroName" th:value="${hero.heroName}" th:checked="${organization.heroes.contains(hero)}"/>
+                                        <label th:text="${hero.heroName}"></label>
+                                    </div>
+                                </th:block>
+                                <div th:if="${#fields.hasErrors('organization.heroes')}">
+                                    <p th:each="error : ${#fields.errors('organization.heroes')}" 
+                                       class="alert alert-danger" th:text="${error}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center m-4">
+                            <button type="submit" class="btn btn-primary">Edit Organization</button>
+                        </div>
+                    </form>
+                </div>                
+                <div class="row justify-content-center">
+                    <form action="organization" method="GET">
+                        <div class="text-center mb-4">
+                            <button type="submit" class="btn btn-primary">Cancel</button>
+                        </div>                        
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- End main body -->
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+</html>

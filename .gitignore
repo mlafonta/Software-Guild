@@ -441,6 +441,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/Summatives/M9Summative/Superhero Sighting Java Files/nbproject/
 /Summatives/M7Summative/GuessTheNumber/target/
 /Classwork/PracticeProgramming/JDBCTComplexExampleStarter/nbproject/
 /Summatives/M7Summative/GuessTheNumber/nbproject/

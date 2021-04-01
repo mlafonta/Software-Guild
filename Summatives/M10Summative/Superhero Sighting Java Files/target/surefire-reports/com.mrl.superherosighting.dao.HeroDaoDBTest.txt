@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.mrl.superherosighting.dao.HeroDaoDBTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.207 s - in com.mrl.superherosighting.dao.HeroDaoDBTest
